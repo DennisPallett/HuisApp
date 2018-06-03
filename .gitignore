@@ -3,3 +3,7 @@
 klimalog/vendor/*
 klimalog/import/*
 klimalog/config.ini
+
+financieel/vendor/*
+financieel/import/*
+financieel/config.ini
