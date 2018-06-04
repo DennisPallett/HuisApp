@@ -4,3 +4,7 @@ port = 5432
 database = 
 user = 
 password = 
+
+[classifier]
+rules[] = ExampleRule
+rules[] = SecondExampleRule
