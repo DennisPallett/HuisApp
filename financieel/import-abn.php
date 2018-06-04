@@ -1,6 +1,6 @@
 <?php
 //require __DIR__ . '/vendor/autoload.php';
-require 'BankStatement.php';
+require 'model/BankStatement.php';
 
 $importDirectory = ".\import\\";
 
@@ -30,8 +30,10 @@ $insertStatementQuery = $conn->prepare("
 ");
 
 $insertEntryQuery = $conn->prepare("
-	INSERT INTO entry (statement_id, reference, booking_date, value_date, amount, description) 
-	VALUES (?, ?, ?, ?, ?, ?)
+	INSERT INTO entry (statement_id, reference, booking_date, value_date, amount, description, 
+	other_party_name, other_party_address, other_party_account, remittance_info,
+	is_card_payment, is_cash_withdrawal, is_shop_sale) 
+	VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
 ");
 
 logMessage("Scanning import directory '" . $importDirectory . " for CSV files");
@@ -48,65 +50,97 @@ $importEntryCount = 0;
 $duplicateCount = 0;
 foreach($files as $file) {	
 	// convert XML file into object
-	logMessage("Processing file " . $file);
+	logMessage("Processing file " . $file . " ...");
 
 	$statement = new BankStatement();
 	$statement->processFile($importDirectory . $file);
 
-	//print_r($statement);
-	//die();
+	
+	logMessage("File processed");
+
+	logMessage("Inserting statement into database...");
 
 	$conn->beginTransaction();
 
-	$insertStatementQuery->bindParam(1, $statement->id);
-	$insertStatementQuery->bindParam(2, $statement->creationDateTime);
-	$insertStatementQuery->bindParam(3, $statement->startBalance->date);
-	$insertStatementQuery->bindParam(4, $statement->startBalance->amount);
-	$insertStatementQuery->bindParam(5, $statement->endBalance->date);
-	$insertStatementQuery->bindParam(6, $statement->endBalance->amount);
+	$insertStatementQuery->bindValue(1, $statement->id);
+	$insertStatementQuery->bindValue(2, $statement->creationDateTime);
+	$insertStatementQuery->bindValue(3, $statement->startBalance->date);
+	$insertStatementQuery->bindValue(4, $statement->startBalance->amount);
+	$insertStatementQuery->bindValue(5, $statement->endBalance->date);
+	$insertStatementQuery->bindValue(6, $statement->endBalance->amount);
 
 	$ret = $insertStatementQuery->execute();
-	$importStatementCount++;
 
+	if (!$ret) {
+		$conn->rollback();
+
+		$errorInfo = $insertStatementQuery->errorInfo();
+		$errorCode = $errorInfo['0'];
+
+		if ($errorCode == '23505') {
+			logMessage("Statement already present in database");
+			$duplicateCount++;
+			continue;
+		} else {
+			logMessage("ERROR: " . $errorInfo[2]);
+			die();
+		}
+			
+	} else {
+		$importStatementCount++;
+		logMessage("Statement inserted");
+	}
+
+	logMessage("Inserting entries...");
 	foreach($statement->entries as $entry) {
-		$insertEntryQuery->bindParam(1, $statement->id);
-		$insertEntryQuery->bindParam(2, $entry->id);
-		$insertEntryQuery->bindParam(3, $entry->bookingDate);
-		$insertEntryQuery->bindParam(4, $entry->valueDate);
-		$insertEntryQuery->bindParam(5, $entry->amount);
-		$insertEntryQuery->bindParam(6, $entry->description);
+		$insertEntryQuery->bindValue(1, $statement->id);
+		$insertEntryQuery->bindValue(2, $entry->id);
+		$insertEntryQuery->bindValue(3, $entry->bookingDate);
+		$insertEntryQuery->bindValue(4, $entry->valueDate);
+		$insertEntryQuery->bindValue(5, $entry->amount);
+		$insertEntryQuery->bindValue(6, $entry->description);
+
+		if ($entry->otherParty != null) {
+			$insertEntryQuery->bindValue(7, $entry->otherParty->name);
+			$insertEntryQuery->bindValue(8, $entry->otherParty->address);
+			$insertEntryQuery->bindValue(9, $entry->otherParty->account);
+		} else {
+			$insertEntryQuery->bindValue(7, null);
+			$insertEntryQuery->bindValue(8, null);
+			$insertEntryQuery->bindValue(9, null);
+		}
+
+		$insertEntryQuery->bindValue(10, $entry->remittanceInfo);
+
+		$insertEntryQuery->bindValue(11, (int) $entry->isCardPayment);
+		$insertEntryQuery->bindValue(12, (int) $entry->isCashWithdrawal);
+		$insertEntryQuery->bindValue(13, (int) $entry->isShopSale);
 
 		$ret = $insertEntryQuery->execute();
 
 		if (!$ret) {
+			$conn->rollback();
+
 			$errorInfo = $insertEntryQuery->errorInfo();
 			$errorCode = $errorInfo['0'];
 
-			//if ($errorCode == '23505') {
-			//	$duplicateCount++;
-			//} else {
-				logMessage("ERROR: " . $errorInfo[2]);
-				die();
-			//}
+			logMessage("ERROR: " . $errorInfo[2]);
+			die();
 			
 		} else {
-			$importCount++;
+			$importEntryCount++;
 		}
-
-		$importEntryCount++;
 	}
+	logMessage("Entries inserted");
 
 	$conn->commit();
-
-	logMessage("File processed");
-
-	//die();
-
 }
+
+logMessage("Summary:");
 
 logMessage("Aantal statements geimporteerd: " . $importStatementCount);
 logMessage("Aantal entries geimporteerd: " . $importEntryCount);
-//logMessage("Aantal oude records gevonden: " . $duplicateCount);
+logMessage("Aantal oude statements gevonden: " . $duplicateCount);
 
 logMessage("Klaar!");
 
