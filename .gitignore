@@ -1,10 +1,5 @@
-.vs/*
+**/.vs/*
 
 klimalog/vendor/*
 klimalog/import/*
 klimalog/config.ini
-
-financieel/vendor/*
-financieel/import/*
-financieel/rules/*
-financieel/config.ini
