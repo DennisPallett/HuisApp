@@ -1,6 +1,7 @@
 export interface ITransactie {
   amount: number,
   category: string,
+  category_name: string,
   description: string,
   remittance_info: string,
   is_card_payment: boolean,

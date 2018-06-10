@@ -15,9 +15,9 @@ export class CreateTransactieDescriptionPipe {
 
     if (value.is_card_payment) {
       if (value.shop_card_payment != null)
-        return "Pinbetaling: " + value.shop_card_payment.description;
+        return value.shop_card_payment.description;
       else
-        return "Pinbetaling" + value.description;
+        return value.description;
     }
 
     return value.other_party_name;

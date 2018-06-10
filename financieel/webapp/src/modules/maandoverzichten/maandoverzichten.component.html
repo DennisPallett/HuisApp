@@ -42,7 +42,7 @@
     <h3>Vaste lasten</h3>
     <table>
       <tr *ngFor="let transactie of vasteLasten">
-        <th>{{transactie.category}}:</th>
+        <th>{{transactie.category_name}}:</th>
         <td>&euro;&nbsp;{{transactie.amount | FormatAmount}}</td>
       </tr>
       <tr class="totaal">
@@ -70,7 +70,10 @@
     <h3>Boodschappen</h3>
     <table>
       <tr *ngFor="let transactie of boodschappen">
-        <th>{{transactie | CreateTransactieDescription}}:</th>
+        <th>
+          <img src="./assets/images/pin.jpg" class="pin" width="25" *ngIf="transactie.is_shop_sale" />
+          {{transactie | CreateTransactieDescription}}
+        </th>
         <td>&euro;&nbsp;{{transactie.amount | FormatAmount}}</td>
       </tr>
       <tr class="totaal">
@@ -85,7 +88,10 @@
       <h3>Brandstof</h3>
       <table>
         <tr *ngFor="let transactie of brandstof">
-          <th>{{transactie | CreateTransactieDescription}}:</th>
+          <th>
+            <img src="./assets/images/pin.jpg" class="pin" width="25" *ngIf="transactie.is_shop_sale" />
+            {{transactie | CreateTransactieDescription}}
+          </th>
           <td>&euro;&nbsp;{{transactie.amount | FormatAmount}}</td>
         </tr>
         <tr class="totaal">
@@ -100,7 +106,10 @@
     <h3>Overige uitgaven</h3>
     <table>
       <tr *ngFor="let transactie of overigeUitgaven">
-        <th>{{transactie | CreateTransactieDescription}}:</th>
+        <th>
+          <img src="./assets/images/pin.jpg" class="pin" width="25" *ngIf="transactie.is_shop_sale" />
+          {{transactie | CreateTransactieDescription}}
+        </th>
         <td>&euro;&nbsp;{{transactie.amount | FormatAmount}}</td>
       </tr>
       <tr class="totaal">

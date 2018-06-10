@@ -68,7 +68,9 @@ class TransactiesAction
 
 		$bindParams = array();
 
-		$sql = "SELECT * FROM entry WHERE 1=1";
+		$sql = "SELECT 
+		entry.*, COALESCE(category.name, entry.category) AS category_name 
+		FROM entry LEFT JOIN category ON entry.category = category.key WHERE 1=1";
 
 		if (!empty($params['month']) && is_numeric($params['month'])) {
 			$sql .= " AND date_part('month', value_date) = :month";
@@ -79,6 +81,8 @@ class TransactiesAction
 			$sql .= " AND date_part('year', value_date) = :year";
 			$bindParams[':year'] = $params['year'];
 		}
+
+		$sql .= " ORDER BY amount ASC";
 
 		$statement = $this->container->db->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
 		$statement->execute($bindParams);

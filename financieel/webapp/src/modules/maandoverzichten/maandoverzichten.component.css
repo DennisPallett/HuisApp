@@ -13,3 +13,7 @@ th, td {
 .totaal th, .totaal td {
   padding-top: 15px;
 }
+
+img.pin {
+  margin-right: 5px;
+}
