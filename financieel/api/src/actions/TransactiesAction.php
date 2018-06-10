@@ -9,9 +9,6 @@ class TransactiesAction
    }
 
    public function __invoke($request, $response, $args) {
-        // your code
-        // to access items in the container... $this->container->get('');
-
 		$entries = $this->loadData($request);
 
 		$data = array();
@@ -20,7 +17,6 @@ class TransactiesAction
 			$record['amount'] = $entry['amount'];
 
 			$data[] = $entry;
-
 		}
 
 		return $response->withJson($data);

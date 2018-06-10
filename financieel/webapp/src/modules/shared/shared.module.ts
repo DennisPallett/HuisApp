@@ -5,11 +5,19 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { MailComponent } from './mail.component';
 import { ConvertToSpacesPipe } from './converttospaces.pipe';
+import { TransactiesService } from './transacties.service';
+import { FormatAmountPipe } from './formatamount';
+import { CreateTransactieDescriptionPipe } from './createtransactiedescription';
+import { DatesService } from './dates.service';
+import { MonthNamePipe } from './monthname';
 
 @NgModule({
   declarations: [
     ConvertToSpacesPipe,
-    MailComponent
+    MailComponent,
+    FormatAmountPipe,
+    CreateTransactieDescriptionPipe,
+    MonthNamePipe
   ],
   imports: [
     BrowserModule,
@@ -20,10 +28,13 @@ import { ConvertToSpacesPipe } from './converttospaces.pipe';
   exports: [
     ConvertToSpacesPipe,
     MailComponent,
+    FormatAmountPipe,
+    CreateTransactieDescriptionPipe,
     FormsModule,
     HttpClientModule,
-    BrowserModule
+    BrowserModule,
+    MonthNamePipe
   ],
-  providers: []
+  providers: [TransactiesService, DatesService]
 })
 export class SharedModule { }

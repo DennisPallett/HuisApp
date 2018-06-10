@@ -25,16 +25,8 @@ $container['db'] = function ($c) {
     return $pdo;
 };
 
-$app->get('/hello/{name}', function (Request $request, Response $response, array $args) {
-    $name = $args['name'];
-    //$response->getBody()->write("Hello, $name");
-
-	$response = $response->withJson(array('hello' => $name));
-
-    return $response;
-});
-
 $app->get('/transacties', TransactiesAction::class);
+$app->get('/dates/months', DatesAction::class  . ':months');
 
 
 $app->run();
