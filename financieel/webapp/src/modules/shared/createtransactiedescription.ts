@@ -14,7 +14,10 @@ export class CreateTransactieDescriptionPipe {
       return "Geld pinnen";
 
     if (value.is_card_payment) {
-      return "Pinbetaling: " + value.description;
+      if (value.shop_card_payment != null)
+        return "Pinbetaling: " + value.shop_card_payment.description;
+      else
+        return "Pinbetaling" + value.description;
     }
 
     return value.other_party_name;

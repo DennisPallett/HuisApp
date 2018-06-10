@@ -14,9 +14,9 @@ export class MaandOverzichtenComponent implements OnInit {
 
   currentMonthYear: string = '';
 
-  currentMonth: number = 4;
+  currentMonth: number = 0;
 
-  currentYear: number = 2018;
+  currentYear: number = 0;
 
   vasteLasten: ITransactie[] = [];
 

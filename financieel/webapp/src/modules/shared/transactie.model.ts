@@ -7,5 +7,10 @@ export interface ITransactie {
   is_cash_withdrawal: boolean,
   booking_date: Date,
   value_date: Date,
-  other_party_name: string
+  other_party_name: string,
+  shop_card_payment: {
+    nr: string,
+    description: string,
+    timestamp: Date
+  }
 }

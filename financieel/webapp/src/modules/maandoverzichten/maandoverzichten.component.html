@@ -6,89 +6,108 @@
 
 <hr />
 
-<h2>{{currentMonth | MonthName}} {{currentYear}}</h2>
-<hr />
+<div *ngIf="currentMonthYear != ''">
 
-<div style="clear:both;">
-  <h3>Totale uitgaven: &euro; {{totaleUitgaven | FormatAmount}}</h3>
-  <h3>Totale inkomen: &euro; {{totaleInkomen | FormatAmount}}</h3>
-  <hr />
-</div>
-
-<div style="float: left; width: 33%; border-right: 1px solid #EFEFEF; padding-right: 5px; margin-right: 5px">
-  <h3>Vaste lasten</h3>
-  <table>
-    <tr *ngFor="let transactie of vasteLasten">
-      <th>{{transactie.category}}:</th>
-      <td>&euro;&nbsp;{{transactie.amount | FormatAmount}}</td>
-    </tr>
-    <tr class="totaal">
-      <th>Totaal:</th>
-      <td>&euro;&nbsp;{{vasteLastenTotaal | FormatAmount}}</td>
-    </tr>
-  </table>
-
+  <h2>{{currentMonth | MonthName}} {{currentYear}}</h2>
   <hr />
 
-  <h3>Inkomen</h3>
-  <table>
-    <tr *ngFor="let transactie of inkomen">
-      <th>{{transactie | CreateTransactieDescription}}:</th>
-      <td>&euro;&nbsp;{{transactie.amount | FormatAmount}}</td>
-    </tr>
-    <tr class="totaal">
-      <th>Totaal:</th>
-      <td>&euro;&nbsp;{{inkomenTotaal | FormatAmount}}</td>
-    </tr>
-  </table>
-</div>
-
-<div style="float: left; width: 33%;">
-  <h3>Boodschappen</h3>
-  <table>
-    <tr *ngFor="let transactie of boodschappen">
-      <th>{{transactie.description}}:</th>
-      <td>&euro;&nbsp;{{transactie.amount | FormatAmount}}</td>
-    </tr>
-    <tr class="totaal">
-      <th>Totaal:</th>
-      <td>&euro;&nbsp;{{boodschappenTotaal | FormatAmount}}</td>
-    </tr>
-  </table>
-
-  <hr />
-
-  <div *ngIf="brandstof.length > 0">
-    <h3>Brandstof</h3>
+  <div style="clear:both;">
     <table>
-      <tr *ngFor="let transactie of brandstof">
-        <th>{{transactie.description}}:</th>
+      <tr>
+        <th>Totale uitgaven:</th>
+        <td>&euro;&nbsp;{{totaleUitgaven | FormatAmount}}</td>
+
+        <th>Totale vaste lasten:</th>
+        <td>&euro;&nbsp;{{vasteLastenTotaal | FormatAmount}}</td>
+
+        <th>Totaal brandstof:</th>
+        <td>&euro;&nbsp;{{brandstofTotaal | FormatAmount}}</td>
+      </tr>
+      <tr>
+        <th>Totale inkomen:</th>
+        <td> &euro;&nbsp;{{totaleInkomen | FormatAmount}}</td>
+
+        <th>Totaal boodschappen:</th>
+        <td>&euro;&nbsp;{{boodschappenTotaal | FormatAmount}}</td>
+
+        <th>Totaal overige uitgaven:</th>
+        <td>&euro;&nbsp;{{overigeUitgavenTotaal | FormatAmount}}</td>
+      </tr>
+    </table>
+ 
+    <hr />
+  </div>
+
+  <div style="float: left; width: 33%; border-right: 1px solid #EFEFEF; padding-right: 5px; margin-right: 5px">
+    <h3>Vaste lasten</h3>
+    <table>
+      <tr *ngFor="let transactie of vasteLasten">
+        <th>{{transactie.category}}:</th>
         <td>&euro;&nbsp;{{transactie.amount | FormatAmount}}</td>
       </tr>
       <tr class="totaal">
         <th>Totaal:</th>
-        <td>&euro;&nbsp;{{brandstofTotaal | FormatAmount}}</td>
+        <td>&euro;&nbsp;{{vasteLastenTotaal | FormatAmount}}</td>
+      </tr>
+    </table>
+
+    <hr />
+
+    <h3>Inkomen</h3>
+    <table>
+      <tr *ngFor="let transactie of inkomen">
+        <th>{{transactie | CreateTransactieDescription}}:</th>
+        <td>&euro;&nbsp;{{transactie.amount | FormatAmount}}</td>
+      </tr>
+      <tr class="totaal">
+        <th>Totaal:</th>
+        <td>&euro;&nbsp;{{inkomenTotaal | FormatAmount}}</td>
       </tr>
     </table>
   </div>
-</div>
 
-<div style="float: left; width: 33%; border-left: 1px solid #EFEFEF; padding-left: 5px; margin-left: 5px;">
-  <h3>Overige uitgaven</h3>
-  <table>
-    <tr *ngFor="let transactie of overigeUitgaven">
-      <th>{{transactie | CreateTransactieDescription}}:</th>
-      <td>&euro;&nbsp;{{transactie.amount | FormatAmount}}</td>
-    </tr>
-    <tr class="totaal">
-      <th>Totaal:</th>
-      <td>&euro;&nbsp;{{overigeUitgavenTotaal | FormatAmount}}</td>
-    </tr>
-  </table>
-</div>
+  <div style="float: left; width: 33%;">
+    <h3>Boodschappen</h3>
+    <table>
+      <tr *ngFor="let transactie of boodschappen">
+        <th>{{transactie | CreateTransactieDescription}}:</th>
+        <td>&euro;&nbsp;{{transactie.amount | FormatAmount}}</td>
+      </tr>
+      <tr class="totaal">
+        <th>Totaal:</th>
+        <td>&euro;&nbsp;{{boodschappenTotaal | FormatAmount}}</td>
+      </tr>
+    </table>
 
-<div style="clear:both; padding-top: 35px;">
-  <hr />
-  <h3>Totale uitgaven: &euro; {{totaleUitgaven | FormatAmount}}</h3>
-  <h3>Totale inkomen: &euro; {{totaleInkomen | FormatAmount}}</h3>
+    <hr />
+
+    <div *ngIf="brandstof.length > 0">
+      <h3>Brandstof</h3>
+      <table>
+        <tr *ngFor="let transactie of brandstof">
+          <th>{{transactie | CreateTransactieDescription}}:</th>
+          <td>&euro;&nbsp;{{transactie.amount | FormatAmount}}</td>
+        </tr>
+        <tr class="totaal">
+          <th>Totaal:</th>
+          <td>&euro;&nbsp;{{brandstofTotaal | FormatAmount}}</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+
+  <div style="float: left; width: 33%; border-left: 1px solid #EFEFEF; padding-left: 5px; margin-left: 5px;">
+    <h3>Overige uitgaven</h3>
+    <table>
+      <tr *ngFor="let transactie of overigeUitgaven">
+        <th>{{transactie | CreateTransactieDescription}}:</th>
+        <td>&euro;&nbsp;{{transactie.amount | FormatAmount}}</td>
+      </tr>
+      <tr class="totaal">
+        <th>Totaal:</th>
+        <td>&euro;&nbsp;{{overigeUitgavenTotaal | FormatAmount}}</td>
+      </tr>
+    </table>
+  </div>
+
 </div>
