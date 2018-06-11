@@ -8,6 +8,7 @@ import { MaandOverzichtenModule } from '../maandoverzichten/maandoverzichten.mod
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 import { NotFoundComponent } from './notfound/notfound.component';
+import { GrafiekenModule } from '../grafieken/grafieken.module';
 
 @NgModule({
   declarations: [
@@ -19,6 +20,7 @@ import { NotFoundComponent } from './notfound/notfound.component';
     SharedModule,
     ProfileModule,
     MaandOverzichtenModule,
+    GrafiekenModule,
     RouterModule.forRoot([
       { path: 'home', component: HomeComponent },
       { path: '', redirectTo: 'home', pathMatch: 'full' },
