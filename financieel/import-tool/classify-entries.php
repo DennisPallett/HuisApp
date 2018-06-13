@@ -62,6 +62,10 @@ foreach($entries as $entry) {
 	$category = null;
 	foreach($ruleObjects as $ruleObj) {
 		$category = $ruleObj->classifyEntry($entry);
+
+		// found a category -> stop classifying
+		if ($category != null)
+			break;
 	}
 
 	if ($category != null) {

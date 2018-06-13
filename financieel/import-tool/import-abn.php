@@ -32,8 +32,8 @@ $insertStatementQuery = $conn->prepare("
 $insertEntryQuery = $conn->prepare("
 	INSERT INTO entry (statement_id, reference, booking_date, value_date, amount, description, 
 	other_party_name, other_party_address, other_party_account, remittance_info,
-	is_card_payment, is_cash_withdrawal, is_shop_sale) 
-	VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+	is_card_payment, is_cash_withdrawal, is_shop_sale, start_balance_amount, end_balance_amount) 
+	VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
 ");
 
 logMessage("Scanning import directory '" . $importDirectory . " for CSV files");
@@ -92,7 +92,10 @@ foreach($files as $file) {
 	}
 
 	logMessage("Inserting entries...");
+	$startBalanceAmount = $statement->startBalance->amount;
 	foreach($statement->entries as $entry) {
+		$endBalanceAmount = $startBalanceAmount + $entry->amount;
+
 		$insertEntryQuery->bindValue(1, $statement->id);
 		$insertEntryQuery->bindValue(2, $entry->id);
 		$insertEntryQuery->bindValue(3, $entry->bookingDate);
@@ -115,6 +118,8 @@ foreach($files as $file) {
 		$insertEntryQuery->bindValue(11, (int) $entry->isCardPayment);
 		$insertEntryQuery->bindValue(12, (int) $entry->isCashWithdrawal);
 		$insertEntryQuery->bindValue(13, (int) $entry->isShopSale);
+		$insertEntryQuery->bindValue(14, $startBalanceAmount);
+		$insertEntryQuery->bindValue(15, $endBalanceAmount);
 
 		$ret = $insertEntryQuery->execute();
 
@@ -130,6 +135,8 @@ foreach($files as $file) {
 		} else {
 			$importEntryCount++;
 		}
+
+		$startBalanceAmount = $endBalanceAmount;
 	}
 	logMessage("Entries inserted");
 
