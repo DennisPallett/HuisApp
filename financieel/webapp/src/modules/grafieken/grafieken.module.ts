@@ -6,10 +6,14 @@ import { ChartModule } from 'angular-highcharts';
 
 import { GrafiekenComponent } from './grafieken.component';
 
+import { ReportingService } from './reporting.service';
+import { LastenInkomenChartComponent } from './lastenInkomenChart.component';
+
 
 @NgModule({
   declarations: [
-    GrafiekenComponent
+    GrafiekenComponent,
+    LastenInkomenChartComponent
   ],
   imports: [
     SharedModule,
@@ -18,6 +22,6 @@ import { GrafiekenComponent } from './grafieken.component';
       { path: 'grafieken', component: GrafiekenComponent }
     ])
   ],
-  providers: []
+  providers: [ReportingService]
 })
 export class GrafiekenModule { }
