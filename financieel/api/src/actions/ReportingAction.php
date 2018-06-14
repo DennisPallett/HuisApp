@@ -8,6 +8,40 @@ class ReportingAction
        $this->container = $container;
    }
 
+   public function balance ($request, $response, $args) {
+		$records = $this->container->db->query("
+			SELECT 
+				start_balance_date, start_balance_amount,
+				end_balance_date, end_balance_amount
+			FROM \"statement\"
+			ORDER BY start_balance_date ASC
+		");
+
+		$data = array();
+		foreach($records as $record) {
+			$data[] = array(
+				'date' => $record['start_balance_date'], 
+				'balance' => $record['start_balance_amount'],
+				'timestamp' => strtotime($record['start_balance_date'])
+			);
+
+			$data[] = array(
+				'date' => $record['end_balance_date'], 
+				'balance' => $record['end_balance_amount'],
+				'timestamp' => strtotime($record['end_balance_date'])
+			);
+		}
+
+		usort($data, function ($a, $b) {
+			if ($a['timestamp'] == $b['timestamp']) {
+				return 0;
+			}
+			return ($a['timestamp'] < $b['timestamp']) ? -1 : 1;
+		});
+
+		return $response->withJson($data);	
+   }
+
    public function categoryByMonth($request, $response, $args) {
 		$records = $this->container->db->query("
 			SELECT 
@@ -21,8 +55,8 @@ class ReportingAction
 				date_part('month', value_date),
 				CASE WHEN(amount > 0) THEN 'inkomen' ELSE 'lasten' END
 			ORDER BY
-				date_part('year', value_date) DESC,
-				date_part('month', value_date) DESC
+				date_part('year', value_date) ASC,
+				date_part('month', value_date) ASC
 		");
 
 		$series = array();

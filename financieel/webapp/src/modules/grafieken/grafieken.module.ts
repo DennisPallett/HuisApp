@@ -8,12 +8,14 @@ import { GrafiekenComponent } from './grafieken.component';
 
 import { ReportingService } from './reporting.service';
 import { LastenInkomenChartComponent } from './lastenInkomenChart.component';
+import { SaldoChartComponent } from './saldoChart.component';
 
 
 @NgModule({
   declarations: [
     GrafiekenComponent,
-    LastenInkomenChartComponent
+    LastenInkomenChartComponent,
+    SaldoChartComponent
   ],
   imports: [
     SharedModule,

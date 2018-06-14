@@ -4,6 +4,7 @@ import { Observable } from "rxjs";
 import { map } from 'rxjs/operators';
 import { environment } from "../../environments/environment";
 import { ICategoryByMonth } from "./categoryByMonth.model";
+import { IBalance } from "./balance.model";
 
 @Injectable()
 export class ReportingService {
@@ -15,6 +16,10 @@ export class ReportingService {
 
   getCategoryByMonth(): Observable<ICategoryByMonth> {
     return this.httpClient.get<ICategoryByMonth>(environment.apiUrl + this.apiAction + "/category-by-month");
+  }
+
+  getBalance(): Observable<IBalance[]> {
+    return this.httpClient.get<IBalance[]>(environment.apiUrl + this.apiAction + "/balance");
   }
 
 }
