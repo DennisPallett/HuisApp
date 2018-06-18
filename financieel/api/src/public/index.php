@@ -26,6 +26,7 @@ $container['db'] = function ($c) {
 };
 
 $app->get('/transacties', TransactiesAction::class);
+$app->get('/categories', CategoriesAction::class);
 $app->get('/dates/months', DatesAction::class  . ':months');
 
 $app->get('/reporting/category-by-month', ReportingAction::class  . ':categoryByMonth');

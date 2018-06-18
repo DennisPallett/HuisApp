@@ -1,0 +1,37 @@
+<h1>Transacties</h1>
+<label>Maand selecteren: </label>&nbsp;
+<select (change)="changeMonth()"  [(ngModel)]="currentMonthYear">
+  <option value="{{month.month + '-' + month.year}}" *ngFor="let month of availableMonths">{{month.month | MonthName}} {{month.year}}</option>
+</select>
+
+<hr />
+
+<table>
+  <thead>
+    <tr>
+      <th width="150">Datum</th>
+      <th>Omschrijving</th>
+      <th>Bedrag</th>
+      <th>Categorie</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let transactie of transacties">
+      <td>{{ transactie.value_date | amDateFormat:'dddd, D MMM' }}</td>
+      <td>
+        <img src="./assets/images/pin.jpg" class="pin" width="25" *ngIf="transactie.is_shop_sale" />
+        {{ transactie | CreateTransactieDescription }}
+        <div class="other-party" *ngIf="transactie.other_party_name != null">{{ transactie.other_party_name }}</div>
+      </td>
+      <td>&euro;&nbsp;{{ transactie.amount | FormatAmount }}</td>
+      <td>
+        <select [(ngModel)]="transactie.category">
+          <option value=""></option>
+          <option *ngFor="let category of categories" value="{{category.key}}">{{category.name}}</option>
+        </select>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<hr />

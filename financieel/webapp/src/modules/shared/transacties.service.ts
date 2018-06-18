@@ -18,11 +18,17 @@ export class TransactiesService {
   }
 
   getTransactiesForMonth(month: number, year: number): Observable<ITransactie[]> {
+    return this.getTransactiesForMonthSortedBy(month, year, "amount", "ASC");
+  }
+
+  getTransactiesForMonthSortedBy(month: number, year: number, sortBy: string, sortOrder: string): Observable<ITransactie[]> {
     return this.httpClient.get<ITransactie[]>(environment.apiUrl + this.apiAction, {
       params:
         {
           month: month.toString(),
-          year: year.toString()
+          year: year.toString(),
+          sortby: sortBy,
+          sortorder: sortOrder
         }
     });
   }

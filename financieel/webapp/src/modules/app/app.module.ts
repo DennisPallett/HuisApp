@@ -9,6 +9,7 @@ import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 import { NotFoundComponent } from './notfound/notfound.component';
 import { GrafiekenModule } from '../grafieken/grafieken.module';
+import { TransactiesModule } from '../transacties/transacties.module';
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import { GrafiekenModule } from '../grafieken/grafieken.module';
     ProfileModule,
     MaandOverzichtenModule,
     GrafiekenModule,
+    TransactiesModule,
     RouterModule.forRoot([
       { path: 'home', component: HomeComponent },
       { path: '', redirectTo: 'home', pathMatch: 'full' },

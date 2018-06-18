@@ -10,6 +10,9 @@ import { FormatAmountPipe } from './formatamount';
 import { CreateTransactieDescriptionPipe } from './createtransactiedescription';
 import { DatesService } from './dates.service';
 import { MonthNamePipe } from './monthname';
+import { MomentModule } from 'ngx-moment';
+import 'moment/locale/nl';
+import { CategoriesService } from './categories.service';
 
 @NgModule({
   declarations: [
@@ -23,7 +26,8 @@ import { MonthNamePipe } from './monthname';
     BrowserModule,
     FormsModule,
     HttpClientModule,
-    BrowserModule
+    BrowserModule,
+    MomentModule
   ],
   exports: [
     ConvertToSpacesPipe,
@@ -33,8 +37,9 @@ import { MonthNamePipe } from './monthname';
     FormsModule,
     HttpClientModule,
     BrowserModule,
-    MonthNamePipe
+    MonthNamePipe,
+    MomentModule
   ],
-  providers: [TransactiesService, DatesService]
+  providers: [TransactiesService, DatesService, CategoriesService]
 })
 export class SharedModule { }

@@ -25,6 +25,8 @@
     "angular-highcharts": "^6.1.4",
     "core-js": "^2.4.1",
     "highcharts": "^6.1.0",
+    "moment": "^2.22.2",
+    "ngx-moment": "^3.0.1",
     "rxjs": "^6.1.0",
     "rxjs-compat": "^6.1.0",
     "zone.js": "^0.8.26"

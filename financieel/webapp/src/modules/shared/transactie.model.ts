@@ -1,4 +1,5 @@
 export interface ITransactie {
+  id: number,
   amount: number,
   category: string,
   category_name: string,

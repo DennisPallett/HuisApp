@@ -82,7 +82,19 @@ class TransactiesAction
 			$bindParams[':year'] = $params['year'];
 		}
 
-		$sql .= " ORDER BY amount ASC";
+		$sortBy = "";
+		$sortOrder = "";
+
+		if (!empty($params['sortby'])) $sortBy = $params['sortby'];
+		if (!empty($params['sortorder'])) $sortOrder = $params['sortorder'];
+
+		$sortOrder = strtoupper($sortOrder);
+		if ($sortOrder != 'ASC' && $sortOrder != 'DESC') $sortOrder = 'ASC';
+
+		if (!in_array($sortBy, array('amount', 'value_date'))) $sortBy = 'amount';
+
+
+		$sql .= " ORDER BY " . $sortBy . ' ' . $sortOrder;
 
 		$statement = $this->container->db->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
 		$statement->execute($bindParams);
