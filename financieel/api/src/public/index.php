@@ -26,6 +26,9 @@ $container['db'] = function ($c) {
 };
 
 $app->get('/transacties', TransactiesAction::class);
+
+$app->post('/transacties/update-category', TransactiesAction::class . ':updateCategory');
+
 $app->get('/categories', CategoriesAction::class);
 $app->get('/dates/months', DatesAction::class  . ':months');
 

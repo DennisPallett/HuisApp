@@ -4,11 +4,13 @@ import { RouterModule, Routes } from '@angular/router';
 import { SharedModule } from '../shared/shared.module';
 
 import { TransactiesComponent } from './transacties.component';
+import { TransactiesFilterPipe } from './transactiesfilter.pipe';
 
 
 @NgModule({
   declarations: [
-    TransactiesComponent
+    TransactiesComponent,
+    TransactiesFilterPipe
   ],
   imports: [
     SharedModule,

@@ -22,6 +22,28 @@ class TransactiesAction
 		return $response->withJson($data);
 	}
 
+	public function updateCategory($request, $response, $args) {
+		$params = $request->getParsedBody();
+
+		if (empty($params['id']) || !is_numeric($params['id'])) {
+			return $response->withStatus(400);
+		}
+
+		if (empty($params['category'])) {
+			$params['category'] = null;
+		}
+
+		$sql = "UPDATE entry SET category = :category WHERE id = :id";
+		$statement = $this->container->db->prepare($sql);
+
+		$statement->execute(array(
+			':id' => $params['id'],
+			':category' => $params['category']
+		));
+
+		return $response->withJson(true);
+	}
+
 	private function parseShopCardPayment ($record) {
 		if	($record['is_card_payment'] != 1 || $record['is_shop_sale'] != 1)
 			return null;

@@ -24,6 +24,8 @@ export class TransactiesComponent implements OnInit {
 
   currentYear: number = 0;
 
+  onlyShowUncategorized: boolean = false;
+
   constructor(private transactiesService: TransactiesService, private datesService: DatesService, private categoriesService: CategoriesService) {
   }
 
@@ -34,6 +36,12 @@ export class TransactiesComponent implements OnInit {
 
     this.categoriesService.getCategories().subscribe((categories) => {
       this.categories = categories;
+    })
+  }
+
+  public saveCategory(transactieId: number, category: string) {
+    this.transactiesService.updateCategory(transactieId, category).subscribe((ret) => {
+      console.log(ret);
     })
   }
 

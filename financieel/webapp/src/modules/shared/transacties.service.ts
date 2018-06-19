@@ -33,4 +33,11 @@ export class TransactiesService {
     });
   }
 
+  updateCategory(transactieId: number, category: string): Observable<boolean> {
+    return this.httpClient.post<boolean>(environment.apiUrl + this.apiAction + "/update-category", {
+      id: transactieId,
+      category: category 
+    });
+  }
+
 }
