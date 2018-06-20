@@ -5,6 +5,7 @@ import { Observable } from "rxjs";
 import { map } from 'rxjs/operators';
 import { environment } from "../../environments/environment";
 import { ICategory } from "./category.model";
+import { ICategoryGroup } from "./categorygroup.model";
 
 @Injectable()
 export class CategoriesService {
@@ -16,6 +17,10 @@ export class CategoriesService {
 
   getCategories(): Observable<ICategory[]> {
     return this.httpClient.get<ICategory[]>(environment.apiUrl + this.apiAction);
+  }
+
+  getCategoryGroups(): Observable<ICategoryGroup[]> {
+    return this.httpClient.get<ICategoryGroup[]>(environment.apiUrl + this.apiAction + '/groups');
   }
 
 }

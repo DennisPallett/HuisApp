@@ -31,7 +31,9 @@
       <td>
         <select [(ngModel)]="transactie.category" (ngModelChange)="saveCategory(transactie.id, $event)">
           <option value=""></option>
-          <option *ngFor="let category of categories" value="{{category.key}}">{{category.name}}</option>
+          <optgroup *ngFor="let categoryGroup of categoryGroups" [label]="categoryGroup.name">
+            <option *ngFor="let category of categoryGroup.categories" value="{{category.key}}">{{category.name}}</option>
+          </optgroup>
         </select>
       </td>
     </tr>

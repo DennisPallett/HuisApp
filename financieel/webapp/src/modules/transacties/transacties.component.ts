@@ -6,6 +6,7 @@ import { DatesService } from '../shared/dates.service';
 import { IMonth } from '../shared/month.model';
 import { CategoriesService } from '../shared/categories.service';
 import { ICategory } from '../shared/category.model';
+import { ICategoryGroup } from '../shared/categorygroup.model';
 
 @Component({
   templateUrl: './transacties.component.html',
@@ -14,7 +15,7 @@ import { ICategory } from '../shared/category.model';
 export class TransactiesComponent implements OnInit {
   availableMonths: IMonth[] = [];
 
-  categories: ICategory[] = [];
+  categoryGroups: ICategoryGroup[] = [];
 
   transacties: ITransactie[] = [];
 
@@ -34,8 +35,8 @@ export class TransactiesComponent implements OnInit {
       this.availableMonths = months;
     });
 
-    this.categoriesService.getCategories().subscribe((categories) => {
-      this.categories = categories;
+    this.categoriesService.getCategoryGroups().subscribe((categoryGroups) => {
+      this.categoryGroups = categoryGroups;
     })
   }
 

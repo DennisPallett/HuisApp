@@ -30,6 +30,8 @@ $app->get('/transacties', TransactiesAction::class);
 $app->post('/transacties/update-category', TransactiesAction::class . ':updateCategory');
 
 $app->get('/categories', CategoriesAction::class);
+$app->get('/categories/groups', CategoriesAction::class . ':groups');
+
 $app->get('/dates/months', DatesAction::class  . ':months');
 
 $app->get('/reporting/category-by-month', ReportingAction::class  . ':categoryByMonth');
