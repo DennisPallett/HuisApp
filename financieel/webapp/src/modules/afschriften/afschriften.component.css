@@ -1,0 +1,23 @@
+table {
+  width: 100%;
+}
+
+th {
+  text-align: left;
+}
+
+th, td {
+  padding: 5px;
+}
+
+thead {
+  background-color: #CCC;
+}
+
+tr:nth-child(even) {
+  background: #EFEFEF;
+}
+
+.delete {
+  text-align: right;
+}

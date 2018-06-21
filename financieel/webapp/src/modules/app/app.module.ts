@@ -10,6 +10,7 @@ import { HomeComponent } from './home/home.component';
 import { NotFoundComponent } from './notfound/notfound.component';
 import { GrafiekenModule } from '../grafieken/grafieken.module';
 import { TransactiesModule } from '../transacties/transacties.module';
+import { AfschriftenModule } from '../afschriften/afschriften.module';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { TransactiesModule } from '../transacties/transacties.module';
     MaandOverzichtenModule,
     GrafiekenModule,
     TransactiesModule,
+    AfschriftenModule,
     RouterModule.forRoot([
       { path: 'home', component: HomeComponent },
       { path: '', redirectTo: 'home', pathMatch: 'full' },

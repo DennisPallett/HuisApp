@@ -27,6 +27,8 @@ $container['db'] = function ($c) {
 
 $app->get('/transacties', TransactiesAction::class);
 
+$app->get('/statements', StatementsAction::class);
+
 $app->post('/transacties/update-category', TransactiesAction::class . ':updateCategory');
 
 $app->get('/categories', CategoriesAction::class);
