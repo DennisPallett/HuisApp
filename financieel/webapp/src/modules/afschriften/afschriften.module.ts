@@ -5,6 +5,7 @@ import { SharedModule } from '../shared/shared.module';
 
 import { AfschriftenComponent } from './afschriften.component';
 import { AfschriftenService } from './afschriften.service';
+import { MonthNamePipe } from '../shared/monthname';
 
 
 @NgModule({
@@ -17,6 +18,6 @@ import { AfschriftenService } from './afschriften.service';
       { path: 'afschriften', component: AfschriftenComponent }
     ])
   ],
-  providers: [AfschriftenService]
+  providers: [AfschriftenService, MonthNamePipe]
 })
 export class AfschriftenModule { }

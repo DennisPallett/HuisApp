@@ -8,7 +8,7 @@
 <hr />
 
 <div *ngIf="currentMonth != 0 && currentYear != 0" class="delete">
-  <a href="#">Alle afschriften voor {{currentMonth | MonthName}} {{currentYear}} verwijderen <i class="fas fa-trash-alt"></i></a>
+  <span (click)="deleteAfschriften()">Alle afschriften voor {{currentMonth | MonthName}} {{currentYear}} verwijderen <i class="fas fa-trash-alt"></i></span>
 </div>
 <table>
   <thead>

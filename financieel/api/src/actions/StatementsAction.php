@@ -21,6 +21,60 @@ class StatementsAction
 		return $response->withJson($data);
 	}
 
+	public function delete($request, $response, $args) {
+		$params = $request->getParsedBody();
+
+		if (empty($params['month'])) {
+			return $response->withStatus(400)->withJson("Missing month parameter");
+		}
+
+		if (empty($params['year'])) {
+			return $response->withStatus(400)->withJson("Missing year parameter");
+		}
+
+		if (!is_numeric($params['month'])) {
+			return $response->withStatus(400)->withJson("Invalid month parameter; must be numeric");
+		}
+
+		if (!is_numeric($params['year'])) {
+			return $response->withStatus(400)->withJson("Invalid year parameter; must be numeric");
+		}
+
+		$this->deleteTransactions($params['month'], $params['year']);
+		$this->deleteStatements($params['month'], $params['year']);
+
+		return $response->withJson(true);
+	}
+
+	private function deleteTransactions($month, $year) {
+		$bindParams = array();
+
+		$sql = "DELETE FROM entry WHERE statement_id IN (
+			SELECT id FROM statement WHERE
+				date_part('month', start_balance_date) = :month
+				AND date_part('year', start_balance_date) = :year
+		)";
+
+		$bindParams[':month'] = $month;
+		$bindParams[':year'] = $year;
+
+		$statement = $this->container->db->prepare($sql);
+		$statement->execute($bindParams);
+	}
+
+	private function deleteStatements($month, $year) {
+		$bindParams = array();
+
+		$sql = "DELETE FROM statement WHERE
+				date_part('month', start_balance_date) = :month
+				AND date_part('year', start_balance_date) = :year";
+
+		$bindParams[':month'] = $month;
+		$bindParams[':year'] = $year;
+
+		$statement = $this->container->db->prepare($sql);
+		$statement->execute($bindParams);
+	}
 
 	private function loadData ($request) {
 		$params = $request->getQueryParams();

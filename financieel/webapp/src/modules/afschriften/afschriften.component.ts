@@ -9,6 +9,7 @@ import { ICategory } from '../shared/category.model';
 import { ICategoryGroup } from '../shared/categorygroup.model';
 import { AfschriftenService } from './afschriften.service';
 import { IAfschrift } from './afschrift.model';
+import { MonthNamePipe } from '../shared/monthname';
 
 @Component({
   templateUrl: './afschriften.component.html',
@@ -29,7 +30,11 @@ export class AfschriftenComponent implements OnInit {
 
   onlyShowUncategorized: boolean = false;
 
-  constructor(private afschriftenService: AfschriftenService, private datesService: DatesService, private categoriesService: CategoriesService) {
+  constructor(
+    private afschriftenService: AfschriftenService,
+    private datesService: DatesService,
+    private categoriesService: CategoriesService,
+    private monthName: MonthNamePipe) {
   }
 
   ngOnInit() {
@@ -48,6 +53,16 @@ export class AfschriftenComponent implements OnInit {
     this.currentYear = parseInt(split[1]);
 
     this.loadAfschriften();
+  }
+
+  public deleteAfschriften() {
+    if (!window.confirm("Weet je zeker dat je alle afschriften voor "
+      + this.monthName.transform(this.currentMonth) + " " + this.currentYear + " wilt verwijderen?"))
+      return;
+
+    this.afschriftenService.delete(this.currentMonth, this.currentYear).subscribe((result) => {
+      this.loadAfschriften();
+    })
   }
 
   private loadAfschriften() {

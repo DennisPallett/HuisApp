@@ -13,6 +13,13 @@ export class AfschriftenService {
   constructor(private httpClient: HttpClient) {
   }
 
+  delete(month: number, year: number): Observable<boolean> {
+    return this.httpClient.post<boolean>(environment.apiUrl + this.apiAction + "/delete", {
+      month: month,
+      year: year
+    });
+  }
+
   getAllAfschriften(): Observable<IAfschrift[]> {
     return this.httpClient.get<IAfschrift[]>(environment.apiUrl + this.apiAction);
   }

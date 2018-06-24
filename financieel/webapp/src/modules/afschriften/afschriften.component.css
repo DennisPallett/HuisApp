@@ -21,3 +21,12 @@ tr:nth-child(even) {
 .delete {
   text-align: right;
 }
+
+.delete span {
+  color: blue;
+  cursor: pointer;
+}
+
+.delete span:hover {
+  text-decoration: underline;
+}
