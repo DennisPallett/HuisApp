@@ -1,21 +1,21 @@
 import { Component, OnInit } from '@angular/core';
-import { TransactiesService } from '../shared/transacties.service';
-import { ITransactie } from '../shared/transactie.model';
+import { TransactiesService } from '../../shared/transacties.service';
+import { ITransactie } from '../../shared/transactie.model';
 import { forEach } from '@angular/router/src/utils/collection';
-import { DatesService } from '../shared/dates.service';
-import { IMonth } from '../shared/month.model';
-import { CategoriesService } from '../shared/categories.service';
-import { ICategory } from '../shared/category.model';
-import { ICategoryGroup } from '../shared/categorygroup.model';
-import { AfschriftenService } from './afschriften.service';
-import { IAfschrift } from './afschrift.model';
-import { MonthNamePipe } from '../shared/monthname';
+import { DatesService } from '../../shared/dates.service';
+import { IMonth } from '../../shared/month.model';
+import { CategoriesService } from '../../shared/categories.service';
+import { ICategory } from '../../shared/category.model';
+import { ICategoryGroup } from '../../shared/categorygroup.model';
+import { AfschriftenService } from '../afschriften.service';
+import { IAfschrift } from '../afschrift.model';
+import { MonthNamePipe } from '../../shared/monthname';
 
 @Component({
-  templateUrl: './afschriften.component.html',
-  styleUrls: ['./afschriften.component.css']
+  templateUrl: './overzicht.component.html',
+  styleUrls: ['./overzicht.component.css']
 })
-export class AfschriftenComponent implements OnInit {
+export class OverzichtComponent implements OnInit {
   availableMonths: IMonth[] = [];
 
   categoryGroups: ICategoryGroup[] = [];
