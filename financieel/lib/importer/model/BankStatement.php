@@ -18,6 +18,8 @@ class BankStatement {
 	private $statement;
 
 	public function processFile(string $file) {
+		// TODO: validate against XSD
+
 		$str = file_get_contents($file);
 		$temp = mb_convert_encoding( $str, "UTF-8" );
 		$xml = simplexml_load_string($temp);
