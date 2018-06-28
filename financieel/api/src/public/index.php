@@ -29,6 +29,7 @@ $app->get('/transacties', TransactiesAction::class);
 
 $app->get('/statements', StatementsAction::class);
 $app->post('/statements/delete', StatementsAction::class . ':delete');
+$app->post('/statements/import', StatementsAction::class . ':import');
 
 $app->post('/transacties/update-category', TransactiesAction::class . ':updateCategory');
 

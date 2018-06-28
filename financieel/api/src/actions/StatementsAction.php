@@ -1,4 +1,5 @@
 <?php
+require ('../../../lib/importer/Importer.php');
 
 class StatementsAction
 {
@@ -21,19 +22,50 @@ class StatementsAction
 		return $response->withJson($data);
 	}
 
+	public function import ($request, $response, $args) {
+		$files = $request->getUploadedFiles();
+
+		if (empty($files)) return $response->withJson("Missing files")->withStatus(400);
+
+		$importer = new Importer($this->container->db);
+
+		$result = array();
+		foreach($files as $file) {
+			$fileName = $file->getClientFilename();
+
+			if ($file->getError() !== UPLOAD_ERR_OK) {
+				$result[] = array('name' => $fileName, 'success' => false, 'error' => 'Upload not OK');
+				continue;
+			}
+
+			$error = null;
+			try {
+				$importer->importFile($file->file);
+			} catch (DuplicateStatementException $e) {
+				$error = "Statement already present in database";
+			} catch (Exception $e) {
+				$error = $e->getMessage();
+			}
+
+			$result[] = array('name' => $fileName, 'success' => ($error == null), 'error' => $error);
+		}
+
+		return $response->withJson($result);
+	}
+
 	public function delete($request, $response, $args) {
 		$params = $request->getParsedBody();
 
 		if (empty($params['month'])) {
-			return $response->withStatus(400)->withJson("Missing month parameter");
+			return $response->withJson("Missing month parameter")->withStatus(400);
 		}
 
 		if (empty($params['year'])) {
-			return $response->withStatus(400)->withJson("Missing year parameter");
+			return $response->withJson("Missing year parameter")->withStatus(400);
 		}
 
 		if (!is_numeric($params['month'])) {
-			return $response->withStatus(400)->withJson("Invalid month parameter; must be numeric");
+			return $response->withJson("Invalid month parameter; must be numeric")->withStatus(400);
 		}
 
 		if (!is_numeric($params['year'])) {

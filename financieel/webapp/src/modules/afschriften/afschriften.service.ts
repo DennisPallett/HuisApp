@@ -4,6 +4,7 @@ import { Observable } from "rxjs";
 import { map } from 'rxjs/operators';
 import { environment } from "../../environments/environment";
 import { IAfschrift } from "./afschrift.model";
+import { IImportResult } from "./importresult.model";
 
 @Injectable()
 export class AfschriftenService {
@@ -18,6 +19,17 @@ export class AfschriftenService {
       month: month,
       year: year
     });
+  }
+
+  importFiles(files: FileList): Observable<IImportResult[]> {
+    const formData: FormData = new FormData();
+
+    for (let i = 0; i < files.length; i++) {
+      let file = files.item(i);
+      formData.append("file" + i, file, file.name);
+    }
+
+    return this.httpClient.post<IImportResult[]>(environment.apiUrl + this.apiAction + "/import", formData);
   }
 
   getAllAfschriften(): Observable<IAfschrift[]> {

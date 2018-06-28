@@ -64,7 +64,11 @@ class Importer {
 		$this->_insertStatementQuery->bindValue(5, $statement->endBalance->date);
 		$this->_insertStatementQuery->bindValue(6, $statement->endBalance->amount);
 
-		$ret = $this->_insertStatementQuery->execute();
+		$ret = false;
+		try {
+			$ret = $this->_insertStatementQuery->execute();
+		} catch (Exception $e) {
+		}
 
 		if (!$ret) {
 			$errorInfo = $this->_insertStatementQuery->errorInfo();
@@ -113,7 +117,11 @@ class Importer {
 			$this->_insertEntryQuery->bindValue(14, $startBalanceAmount);
 			$this->_insertEntryQuery->bindValue(15, $endBalanceAmount);
 
-			$ret = $this->_insertEntryQuery->execute();
+			$ret = false;
+			try {
+				$ret = $this->_insertEntryQuery->execute();
+			} catch (Exception $e) {
+			}
 
 			if (!$ret) {
 				$errorInfo = $this->_insertEntryQuery->errorInfo();
