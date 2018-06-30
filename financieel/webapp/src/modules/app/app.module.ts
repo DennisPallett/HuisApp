@@ -11,6 +11,7 @@ import { NotFoundComponent } from './notfound/notfound.component';
 import { GrafiekenModule } from '../grafieken/grafieken.module';
 import { TransactiesModule } from '../transacties/transacties.module';
 import { AfschriftenModule } from '../afschriften/afschriften.module';
+import { CategoriesModule } from '../categories/categories.module';
 
 @NgModule({
   declarations: [
@@ -25,6 +26,7 @@ import { AfschriftenModule } from '../afschriften/afschriften.module';
     GrafiekenModule,
     TransactiesModule,
     AfschriftenModule,
+    CategoriesModule,
     RouterModule.forRoot([
       { path: 'home', component: HomeComponent },
       { path: '', redirectTo: 'home', pathMatch: 'full' },

@@ -1,4 +1,5 @@
 <?php
+require ('../../../lib/importer/Classifier.php');
 
 class TransactiesAction
 {
@@ -18,6 +19,19 @@ class TransactiesAction
 
 			$data[] = $record;
 		}
+
+		return $response->withJson($data);
+	}
+
+	public function classify ($request, $response, $args) {
+		$classifier = new Classifier($this->container->db);
+		$classified = $classifier->classify();
+
+		$data = array(
+			'classifiedCount' => $classifier->classifiedCount,
+			'unclassifiedCount' => $classifier->unclassifiedCount,
+			'classified' => $classified
+		);
 
 		return $response->withJson($data);
 	}

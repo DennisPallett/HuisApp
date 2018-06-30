@@ -1,4 +1,5 @@
 <?php
+require 'IImportLogger.php';
 require 'model/BankStatement.php';
 
 class Importer {
@@ -147,8 +148,4 @@ class Importer {
 }
 
 class DuplicateStatementException extends Exception {
-}
-
-interface IImportLogger {
-	public function logMessage($message);
 }

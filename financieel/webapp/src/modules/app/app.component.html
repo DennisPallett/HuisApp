@@ -15,6 +15,15 @@
       <li class="nav-item"><a class="nav-link" [routerLink]="['/maandoverzichten']">Maandoverzichten</a></li>
       <li class="nav-item"><a class="nav-link" [routerLink]="['/transacties']">Transacties</a></li>
       <li class="nav-item"><a class="nav-link" [routerLink]="['/grafieken']">Grafieken</a></li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Categori&euml;n
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" [routerLink]="['/afschriften']">Overzicht</a>
+          <a class="dropdown-item" [routerLink]="['/categories/classify']">Automatisch classificeren</a>
+        </div>
+      </li>
     </ul>
   </nav>
 
