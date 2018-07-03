@@ -10,7 +10,8 @@ $app = new \Slim\App(['settings' => $config]);
 $container = $app->getContainer();
 
 $container['db'] = function ($c) {
-    $pdo = new PDO($c['settings']['databaseConnectionString']);
+	$db = $c['settings']['db'];
+    $pdo = new PDO($db['connectionString'], $db['user'], $db['password']);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
     return $pdo;
