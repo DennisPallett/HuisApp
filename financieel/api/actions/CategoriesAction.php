@@ -9,17 +9,25 @@ class CategoriesAction
    }
 
    public function groups ($request, $response, $args) {
-		$records = $this->container->db->query("
+		$records = $this->container->db->query('
 			SELECT 
-				cg.key AS categorygroup_key,
-				COALESCE(cg.name, 'Misc') AS categorygroup_name,
-				c.key AS category_key,
+				cg."key" AS categorygroup_key,
+				cg.name AS categorygroup_name,
+				c."key" AS category_key,
 				c.name AS category_name
 			FROM categorygroup cg
-			FULL OUTER JOIN category c ON c.group = cg.key
+			LEFT JOIN category c ON c.group = cg.key
+			UNION
+			SELECT
+				\'misc\' AS categorygroup_key,
+				\'Misc\' AS categorygroup_name,
+				c."key" AS category_key,
+				c.name AS category_name
+			FROM category c
+			WHERE c.group IS NULL
 			ORDER BY
-				cg.name ASC
-		");
+				categorygroup_name ASC
+		');
 
 		$data = array();
 		foreach($records as $record) {
@@ -38,14 +46,14 @@ class CategoriesAction
    }
 
    public function __invoke($request, $response, $args) {
-		$categories = $this->container->db->query("
+		$categories = $this->container->db->query('
 			SELECT 
-				key,
+				"key",
 				name
-			FROM category
+			FROM "category"
 			ORDER BY
 				name ASC
-		");
+		');
 
 		$data = array();
 		foreach($categories as $category) {
