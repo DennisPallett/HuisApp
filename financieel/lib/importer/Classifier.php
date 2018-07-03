@@ -48,7 +48,7 @@ class Classifier {
 			$category = $this->classifyEntry($entry);
 
 			if ($category != null) {
-				$results[$entry['id']] = $category;
+				$results[] = array('id' => $entry['id'], 'category' => $category);
 			}
 		}
 

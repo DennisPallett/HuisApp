@@ -31,7 +31,7 @@ $app->get('/statements', StatementsAction::class);
 $app->post('/statements/delete', StatementsAction::class . ':delete');
 $app->post('/statements/import', StatementsAction::class . ':import');
 
-$app->get('/transacties/classify', TransactiesAction::class . ':classify');
+$app->post('/transacties/classify', TransactiesAction::class . ':classify');
 $app->post('/transacties/update-category', TransactiesAction::class . ':updateCategory');
 
 $app->get('/categories', CategoriesAction::class);

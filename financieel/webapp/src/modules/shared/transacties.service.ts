@@ -4,6 +4,7 @@ import { HttpClient } from "@angular/common/http";
 import { Observable } from "rxjs";
 import { map } from 'rxjs/operators';
 import { environment } from "../../environments/environment";
+import { IClassifyResult } from "./classifyresult.model";
 
 @Injectable()
 export class TransactiesService {
@@ -38,6 +39,10 @@ export class TransactiesService {
       id: transactieId,
       category: category 
     });
+  }
+
+  classify(): Observable<IClassifyResult> {
+    return this.httpClient.post<IClassifyResult>(environment.apiUrl + this.apiAction + "/classify", {});
   }
 
 }

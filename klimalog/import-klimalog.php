@@ -18,7 +18,7 @@ $conStr = sprintf("pgsql:host=%s;port=%d;dbname=%s;user=%s;password=%s",
     $config['db']['user'], 
     $config['db']['password']);
 
-logMessage("Setting up database connection to '" . $db['database'] . "'...");
+logMessage("Setting up database connection to '" . $config['db']['database'] . "'...");
 
 $conn = new \PDO($conStr);
 
