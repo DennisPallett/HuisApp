@@ -1,5 +1,5 @@
 <?php
-require ('../../../lib/importer/Importer.php');
+require ('../../lib/importer/Importer.php');
 
 class StatementsAction
 {

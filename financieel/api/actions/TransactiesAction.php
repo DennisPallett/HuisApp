@@ -1,5 +1,5 @@
 <?php
-require ('../../../lib/importer/Classifier.php');
+require ('../../lib/importer/Classifier.php');
 
 class TransactiesAction
 {
