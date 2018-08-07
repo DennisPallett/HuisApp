@@ -10,6 +10,21 @@ $app = new \Slim\App(['settings' => $config]);
 
 $container = $app->getContainer();
 
+$container['dataLayer'] = function ($c) {
+	$db = $c['settings']['db'];
+
+	$dbType = substr($db['connectionString'], 0, stripos($db['connectionString'], ':'));
+
+	switch($dbType) {
+		case 'pgsql':
+			return new PostgresDataLayer($db['connectionString'], $db['user'], $db['password']);
+		case 'mysql':
+			throw new Exception("TODO: MySQL data layer");
+		default:
+			throw new Exception('Unsupported database type: ' . $dbType);
+	}
+};
+
 $container['db'] = function ($c) {
 	$db = $c['settings']['db'];
     $pdo = new PDO($db['connectionString'], $db['user'], $db['password']);

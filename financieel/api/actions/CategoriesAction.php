@@ -9,25 +9,7 @@ class CategoriesAction
    }
 
    public function groups ($request, $response, $args) {
-		$records = $this->container->db->query('
-			SELECT 
-				cg."key" AS categorygroup_key,
-				cg.name AS categorygroup_name,
-				c."key" AS category_key,
-				c.name AS category_name
-			FROM categorygroup cg
-			LEFT JOIN category c ON c.group = cg.key
-			UNION
-			SELECT
-				\'misc\' AS categorygroup_key,
-				\'Misc\' AS categorygroup_name,
-				c."key" AS category_key,
-				c.name AS category_name
-			FROM category c
-			WHERE c.group IS NULL
-			ORDER BY
-				categorygroup_name ASC
-		');
+		$records = $this->container->dataLayer->getCategoriesAndGroups();
 
 		$data = array();
 		foreach($records as $record) {
@@ -46,14 +28,7 @@ class CategoriesAction
    }
 
    public function __invoke($request, $response, $args) {
-		$categories = $this->container->db->query('
-			SELECT 
-				"key",
-				name
-			FROM "category"
-			ORDER BY
-				name ASC
-		');
+		$categories = $this->container->dataLayer->getCategories();
 
 		$data = array();
 		foreach($categories as $category) {

@@ -9,21 +9,10 @@ class DatesAction
    }
 
    public function months($request, $response, $args) {
-		$months = $this->container->db->query("
-			SELECT 
-				date_part('year', value_date) as year,
-				date_part('month', value_date) AS month
-			FROM entry
-			GROUP BY 
-				date_part('year', value_date),
-				date_part('month', value_date)
-			ORDER BY
-				date_part('year', value_date) DESC,
-				date_part('month', value_date) DESC
-		");
+		$records = $this->container->dataLayer->getMonths();
 
 		$data = array();
-		foreach($months as $month) {
+		foreach($records as $month) {
 			$record = array();
 			$record['month'] = $month['month'];
 			$record['year'] = $month['year'];

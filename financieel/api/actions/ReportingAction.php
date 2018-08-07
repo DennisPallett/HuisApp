@@ -9,13 +9,7 @@ class ReportingAction
    }
 
    public function balance ($request, $response, $args) {
-		$records = $this->container->db->query("
-			SELECT 
-				start_balance_date, start_balance_amount,
-				end_balance_date, end_balance_amount
-			FROM \"statement\"
-			ORDER BY start_balance_date ASC
-		");
+		$records = $this->container->dataLayer->getBalances();
 
 		$data = array();
 		foreach($records as $record) {
