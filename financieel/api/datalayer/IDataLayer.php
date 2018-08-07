@@ -8,7 +8,9 @@ interface IDataLayer {
 
 	function getCategoriesAndGroups();
 
-	function getBalances ();
+	function getReportingData() : IReportingDataLayer;
+
+	function getStatementsData() : IStatementsDataLayer;
 
 
 }

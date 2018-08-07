@@ -10,12 +10,32 @@ class StatementsAction
 	}
 
     public function __invoke($request, $response, $args) {
-        $entries = $this->loadData($request);
+		$params = $request->getQueryParams();
+
+		$year = null;
+		$month = null;
+
+		if (!empty($params['month']) && is_numeric($params['month'])) 
+			$month = $params['month'];
+
+		if (!empty($params['year']) && is_numeric($params['year'])) 
+			$month = $params['year'];
+
+		$sortBy = "";
+		$sortOrder = "";
+
+		if (!empty($params['sortby'])) $sortBy = $params['sortby'];
+		if (!empty($params['sortorder'])) $sortOrder = $params['sortorder'];
+
+		$sortOrder = strtoupper($sortOrder);
+		if ($sortOrder != 'ASC' && $sortOrder != 'DESC') $sortOrder = 'ASC';
+
+		if (!in_array($sortBy, array('start_balance_date'))) $sortBy = 'start_balance_date';
+
+        $records = $this->container->dataLayer->getStatementsData()->getStatements($year, $month, $sortBy, $sortOrder);
 
         $data = array();
-		foreach($entries as $entry) {
-			$record = $entry;
-
+		foreach($records as $record) {
 			$data[] = $record;
 		}
 
@@ -72,40 +92,10 @@ class StatementsAction
 			return $response->withStatus(400)->withJson("Invalid year parameter; must be numeric");
 		}
 
-		$this->deleteTransactions($params['month'], $params['year']);
-		$this->deleteStatements($params['month'], $params['year']);
+		$this->container->dataLayer->getStatementsData()->deleteTransactions($params['month'], $params['year']);
+		$this->container->dataLayer->getStatementsData()->deleteStatements($params['month'], $params['year']);
 
 		return $response->withJson(true);
-	}
-
-	private function deleteTransactions($month, $year) {
-		$bindParams = array();
-
-		$sql = "DELETE FROM entry WHERE statement_id IN (
-			SELECT id FROM statement WHERE
-				date_part('month', start_balance_date) = :month
-				AND date_part('year', start_balance_date) = :year
-		)";
-
-		$bindParams[':month'] = $month;
-		$bindParams[':year'] = $year;
-
-		$statement = $this->container->db->prepare($sql);
-		$statement->execute($bindParams);
-	}
-
-	private function deleteStatements($month, $year) {
-		$bindParams = array();
-
-		$sql = "DELETE FROM statement WHERE
-				date_part('month', start_balance_date) = :month
-				AND date_part('year', start_balance_date) = :year";
-
-		$bindParams[':month'] = $month;
-		$bindParams[':year'] = $year;
-
-		$statement = $this->container->db->prepare($sql);
-		$statement->execute($bindParams);
 	}
 
 	private function loadData ($request) {

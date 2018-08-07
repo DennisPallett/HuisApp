@@ -1,10 +1,12 @@
 <?php
 require 'postgres/PostgresReportingDataLayer.php';
+require 'postgres/PostgresStatementsDataLayer.php';
 
 class PostgresDataLayer implements IDataLayer {
 	private $db;
 
 	private $reportingDataLayer;
+	private $statementsDataLayer;
 
 	public function __construct($connectionString, $user, $password) {
 		$this->db = new PDO($connectionString, $user, $password);
@@ -12,10 +14,15 @@ class PostgresDataLayer implements IDataLayer {
 		$this->db->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
 
 		$this->reportingDataLayer = new PostgresReportingDataLayer($this->db);
+		$this->statementsDataLayer = new PostgresStatementsDataLayer($this->db);
 	}
 
-	function getBalances () {
-		return $this->reportingDataLayer->getBalances();
+	function getReportingData () : IReportingDataLayer {
+		return $this->reportingDataLayer;
+	}
+
+	function getStatementsData() : IStatementsDataLayer {
+		return $this->statementsDataLayer;
 	}
 
 	function getCategoriesAndGroups () {

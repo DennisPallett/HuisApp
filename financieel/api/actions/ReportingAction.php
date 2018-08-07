@@ -9,7 +9,7 @@ class ReportingAction
    }
 
    public function balance ($request, $response, $args) {
-		$records = $this->container->dataLayer->getBalances();
+		$records = $this->container->dataLayer->getReportingData()->getBalances();
 
 		$data = array();
 		foreach($records as $record) {
@@ -37,21 +37,7 @@ class ReportingAction
    }
 
    public function categoryByMonth($request, $response, $args) {
-		$records = $this->container->db->query("
-			SELECT 
-				date_part('year', value_date) as year,
-				date_part('month', value_date) AS month,
-				CASE WHEN(amount > 0) THEN 'inkomen' ELSE 'lasten' END AS stack,
-				sum(amount) AS total_amount
-			FROM entry
-			GROUP BY 
-				date_part('year', value_date),
-				date_part('month', value_date),
-				CASE WHEN(amount > 0) THEN 'inkomen' ELSE 'lasten' END
-			ORDER BY
-				date_part('year', value_date) ASC,
-				date_part('month', value_date) ASC
-		");
+		$records = $this->container->dataLayer->getReportingData()->getAmountsByCategory();
 
 		$series = array();
 		$categories = array();
