@@ -19,12 +19,12 @@ class PostgresStatementsDataLayer implements IStatementsDataLayer {
 
 		if (!empty($month) && is_numeric($month)) {
 			$sql .= " AND date_part('month', start_balance_date) = :month";
-			$bindParams[':month'] = $params['month'];
+			$bindParams[':month'] = $month;
 		}
 
 		if (!empty($year) && is_numeric($year)) {
 			$sql .= " AND date_part('year', start_balance_date) = :year";
-			$bindParams[':year'] = $params['year'];
+			$bindParams[':year'] = $year;
 		}
 
 		$sql .= " ORDER BY " . $sortBy . ' ' . $sortOrder;
@@ -47,7 +47,7 @@ class PostgresStatementsDataLayer implements IStatementsDataLayer {
 		$bindParams[':month'] = $month;
 		$bindParams[':year'] = $year;
 
-		$statement = $this->container->db->prepare($sql);
+		$statement = $this->db->prepare($sql);
 		$statement->execute($bindParams);
 	}
 
@@ -61,7 +61,7 @@ class PostgresStatementsDataLayer implements IStatementsDataLayer {
 		$bindParams[':month'] = $month;
 		$bindParams[':year'] = $year;
 
-		$statement = $this->container->db->prepare($sql);
+		$statement = $this->db->prepare($sql);
 		$statement->execute($bindParams);
 	}
 }

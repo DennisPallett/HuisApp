@@ -22,6 +22,10 @@ class Entry {
 
 	public $isShopSale = false;
 
+	public $startBalanceAmount;
+
+	public $endBalanceAmount;
+
 	public function  __construct($entryXml)
 	{
 		$this->id = (string) $entryXml->AcctSvcrRef;

@@ -12,5 +12,7 @@ interface IDataLayer {
 
 	function getStatementsData() : IStatementsDataLayer;
 
+	function getImportData() : IImportDataLayer;
+
 
 }

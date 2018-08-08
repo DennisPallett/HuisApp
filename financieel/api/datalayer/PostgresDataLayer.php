@@ -1,12 +1,16 @@
 <?php
 require 'postgres/PostgresReportingDataLayer.php';
 require 'postgres/PostgresStatementsDataLayer.php';
+require 'postgres/PostgresImportDataLayer.php';
 
 class PostgresDataLayer implements IDataLayer {
 	private $db;
 
 	private $reportingDataLayer;
+
 	private $statementsDataLayer;
+
+	private $importDataLayer;
 
 	public function __construct($connectionString, $user, $password) {
 		$this->db = new PDO($connectionString, $user, $password);
@@ -15,6 +19,7 @@ class PostgresDataLayer implements IDataLayer {
 
 		$this->reportingDataLayer = new PostgresReportingDataLayer($this->db);
 		$this->statementsDataLayer = new PostgresStatementsDataLayer($this->db);
+		$this->importDataLayer = new PostgresImportDataLayer($this->db);
 	}
 
 	function getReportingData () : IReportingDataLayer {
@@ -23,6 +28,10 @@ class PostgresDataLayer implements IDataLayer {
 
 	function getStatementsData() : IStatementsDataLayer {
 		return $this->statementsDataLayer;
+	}
+
+	function getImportData() : IImportDataLayer {
+		return $this->importDataLayer;
 	}
 
 	function getCategoriesAndGroups () {
