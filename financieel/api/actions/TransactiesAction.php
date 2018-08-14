@@ -1,5 +1,5 @@
 <?php
-require ('../../lib/importer/Classifier.php');
+//require ('../../lib/importer/Classifier.php');
 
 class TransactiesAction
 {
@@ -10,13 +10,33 @@ class TransactiesAction
 	}
 
     public function __invoke($request, $response, $args) {
-        $entries = $this->loadData($request);
+		$params = $request->getQueryParams();
+
+		$year = null;
+		$month = null;
+
+		if (!empty($params['month']) && is_numeric($params['month'])) 
+			$month = $params['month'];
+
+		if (!empty($params['year']) && is_numeric($params['year'])) 
+			$year = $params['year'];
+
+		$sortBy = "";
+		$sortOrder = "";
+
+		if (!empty($params['sortby'])) $sortBy = $params['sortby'];
+		if (!empty($params['sortorder'])) $sortOrder = $params['sortorder'];
+
+		$sortOrder = strtoupper($sortOrder);
+		if ($sortOrder != 'ASC' && $sortOrder != 'DESC') $sortOrder = 'ASC';
+
+		if (!in_array($sortBy, array('amount', 'value_date'))) $sortBy = 'amount';
+
+        $records = $this->container->dataLayer->getTransactionsData()->getTransactions($year, $month, $sortBy, $sortOrder);
 
         $data = array();
-		foreach($entries as $entry) {
-			$record = $entry;
+		foreach($records as $record) {
 			$record['shop_card_payment'] = $this->parseShopCardPayment($record);
-
 			$data[] = $record;
 		}
 
@@ -43,18 +63,11 @@ class TransactiesAction
 			return $response->withStatus(400);
 		}
 
-		if (empty($params['category'])) {
-			$params['category'] = null;
+		if (!isset($params['category'])) {
+			return $response->withStatus(400);
 		}
 
-		$sql = "UPDATE entry SET category = :category WHERE id = :id";
-		$statement = $this->container->db->prepare($sql);
-
-		$statement->execute(array(
-			':id' => $params['id'],
-			':category' => $params['category']
-		));
-
+		$this->container->dataLayer->getTransactionsData()->updateCategory($params['id'], $params['category']);
 		return $response->withJson(true);
 	}
 
@@ -118,17 +131,7 @@ class TransactiesAction
 			$bindParams[':year'] = $params['year'];
 		}
 
-		$sortBy = "";
-		$sortOrder = "";
-
-		if (!empty($params['sortby'])) $sortBy = $params['sortby'];
-		if (!empty($params['sortorder'])) $sortOrder = $params['sortorder'];
-
-		$sortOrder = strtoupper($sortOrder);
-		if ($sortOrder != 'ASC' && $sortOrder != 'DESC') $sortOrder = 'ASC';
-
-		if (!in_array($sortBy, array('amount', 'value_date'))) $sortBy = 'amount';
-
+		
 
 		$sql .= " ORDER BY " . $sortBy . ' ' . $sortOrder;
 

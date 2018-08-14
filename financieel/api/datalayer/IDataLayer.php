@@ -14,5 +14,7 @@ interface IDataLayer {
 
 	function getImportData() : IImportDataLayer;
 
+	function getTransactionsData() : ITransactionsDataLayer;
+
 
 }
