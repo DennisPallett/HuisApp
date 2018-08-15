@@ -1,5 +1,5 @@
 <?php
-//require ('../../lib/importer/Classifier.php');
+require ('../../lib/importer/Classifier.php');
 
 class TransactiesAction
 {
@@ -44,7 +44,8 @@ class TransactiesAction
 	}
 
 	public function classify ($request, $response, $args) {
-		$classifier = new Classifier($this->container->db);
+		$importDataLayer = $this->container->dataLayer->getImportData();
+		$classifier = new Classifier($importDataLayer);
 		$classified = $classifier->classify();
 
 		$data = array(

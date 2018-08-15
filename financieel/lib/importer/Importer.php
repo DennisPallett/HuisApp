@@ -1,7 +1,7 @@
 <?php
-require 'IImportLogger.php';
-require 'IImportDataLayer.php';
-require 'model/BankStatement.php';
+require_once 'IImportLogger.php';
+require_once 'IImportDataLayer.php';
+require_once 'model/BankStatement.php';
 
 class Importer {
 	public $importEntryCount = 0;

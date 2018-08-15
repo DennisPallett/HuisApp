@@ -25,21 +25,6 @@ $container['dataLayer'] = function ($c) {
 	}
 };
 
-$container['db'] = function ($c) {
-	$db = $c['settings']['db'];
-    $pdo = new PDO($db['connectionString'], $db['user'], $db['password']);
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
-
-	if (substr($db['connectionString'], 0, strlen('mysql')) == 'mysql') {
-		$pdo->query("SET SESSION sql_warnings=1");
-		$pdo->query("SET NAMES utf8");
-		$pdo->query("SET SESSION sql_mode = \"ANSI,TRADITIONAL\"");
-	}
-
-    return $pdo;
-};
-
 $app->get('/transacties', TransactiesAction::class);
 
 $app->get('/statements', StatementsAction::class);

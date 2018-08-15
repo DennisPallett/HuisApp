@@ -8,6 +8,8 @@ class PostgresImportDataLayer implements IImportDataLayer {
 
 	private $insertEntryQuery;
 
+	private $updateEntryCategoryQuery;
+
 	public function __construct($db) {
 		$this->db = $db;
 
@@ -22,6 +24,8 @@ class PostgresImportDataLayer implements IImportDataLayer {
 			is_card_payment, is_cash_withdrawal, is_shop_sale, start_balance_amount, end_balance_amount) 
 			VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
 		");
+
+		$this->updateEntryCategoryQuery = $db->prepare("UPDATE entry SET category = ? WHERE id = ?");
 	}
 
 	function beginTransaction () {
@@ -105,10 +109,26 @@ class PostgresImportDataLayer implements IImportDataLayer {
 	}
 
 	function loadUnclassifiedEntries () {
-		// TODO: implementeren
+		return $this->db->query("SELECT * FROM entry WHERE category IS NULL");
 	}
 
 	function updateEntryCategory ($entryId, $category) {
-		// TODO: implementeren
+		// update in database
+		$this->updateEntryCategoryQuery->bindValue(1, $category);
+		$this->updateEntryCategoryQuery->bindValue(2, $entryId);
+
+		$ret = false;
+		try {
+			$ret = $this->updateEntryCategoryQuery->execute();
+		} catch (Exception $e) {
+		}
+
+		if (!$ret) {
+			$errorInfo = $this->updateEntryCategoryQuery->errorInfo();
+			$errorCode = $errorInfo['0'];
+			$errorMessage = $errorInfo['2'];
+
+			throw new Exception($errorMessage . ' (' . $errorCode . ')');
+		}
 	}
 }

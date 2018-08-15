@@ -1,14 +1,13 @@
 <?php
-require 'IImportLogger.php';
-require 'IRule.php';
-require 'model/BankStatement.php';
+require_once 'IImportLogger.php';
+require_once 'IImportDataLayer.php';
+require_once 'IRule.php';
+require_once 'model/BankStatement.php';
 
 class Classifier {
 	public $classifiedCount;
 
 	public $unclassifiedCount;
-
-	private $_connection;
 
 	private $_loggers = array();
 
@@ -20,10 +19,10 @@ class Classifier {
 
 	private $_updateQuery;
 
-	public function __construct($connection) {
-		$this->_connection = $connection;
+	private $_dataLayer;
 
-		$this->_updateQuery = $connection->prepare("UPDATE entry SET category = ? WHERE id = ?");
+	public function __construct(IImportDataLayer $dataLayer) {
+		$this->_dataLayer = $dataLayer;
 	}
 
 	public function addLogger(IImportLogger $logger) {
@@ -77,23 +76,8 @@ class Classifier {
 		// update entry with category
 		$this->logMessage("Entry #" . $entry['id'] . " classified as: " . $category);
 
-		// update in database
-		$this->_updateQuery->bindValue(1, $category);
-		$this->_updateQuery->bindValue(2, $entry['id']);
-
-		$ret = false;
-		try {
-			$ret = $this->_updateQuery->execute();
-		} catch (Exception $e) {
-		}
-
-		if (!$ret) {
-			$errorInfo = $this->_insertEntryQuery->errorInfo();
-			$errorCode = $errorInfo['0'];
-			$errorMessage = $errorInfo['2'];
-
-			throw new Exception($errorMessage . ' (' . $errorCode . ')');
-		}
+		// update in datalayer
+		$this->_dataLayer->updateEntryCategory($entry['id'], $category);
 
 		$this->classifiedCount++;
 
@@ -103,7 +87,7 @@ class Classifier {
 	private function loadEntries () {
 		$this->logMessage("Loading unclassified entries...");
 
-		$this->_entries = $this->_connection->query("SELECT * FROM entry WHERE category IS NULL");
+		$this->_entries = $this->_dataLayer->loadUnclassifiedEntries();
 		
 		$this->logMessage("Loaded entries");
 	}
@@ -137,7 +121,4 @@ class Classifier {
 			$logger->logMessage($message);
 		}
 	}
-}
-
-class DuplicateStatementException extends Exception {
 }
