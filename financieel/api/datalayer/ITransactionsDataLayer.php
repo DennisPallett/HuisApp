@@ -1,4 +1,5 @@
 <?php
+namespace datalayer;
 
 interface ITransactionsDataLayer {
 	function updateCategory($transactionId, $category);

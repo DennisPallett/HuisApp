@@ -1,4 +1,5 @@
 <?php
+namespace datalayer;
 
 interface IStatementsDataLayer {
 	function deleteStatements($month, $year);

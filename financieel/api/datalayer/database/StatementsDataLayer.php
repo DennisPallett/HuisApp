@@ -1,6 +1,7 @@
 <?php
+namespace datalayer\database;
 
-class PostgresStatementsDataLayer implements IStatementsDataLayer {
+abstract class StatementsDataLayer implements \datalayer\IStatementsDataLayer {
 	private $db;
 
 	public function __construct($db) {
@@ -29,7 +30,7 @@ class PostgresStatementsDataLayer implements IStatementsDataLayer {
 
 		$sql .= " ORDER BY " . $sortBy . ' ' . $sortOrder;
 		
-		$statement = $this->db->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+		$statement = $this->db->prepare($sql, array(\PDO::ATTR_CURSOR => \PDO::CURSOR_FWDONLY));
 		$statement->execute($bindParams);
 
 		return $statement->fetchAll();

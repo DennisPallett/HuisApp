@@ -1,4 +1,5 @@
 <?php
+namespace datalayer;
 
 interface IDataLayer {
 	
@@ -12,7 +13,7 @@ interface IDataLayer {
 
 	function getStatementsData() : IStatementsDataLayer;
 
-	function getImportData() : IImportDataLayer;
+	function getImportData() : \IImportDataLayer;
 
 	function getTransactionsData() : ITransactionsDataLayer;
 

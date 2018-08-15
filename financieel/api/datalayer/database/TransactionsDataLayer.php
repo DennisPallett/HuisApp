@@ -1,6 +1,7 @@
 <?php
+namespace datalayer\database;
 
-class PostgresTransactionsDataLayer implements ITransactionsDataLayer {
+abstract class TransactionsDataLayer implements \datalayer\ITransactionsDataLayer {
 	private $db;
 
 	public function __construct($db) {
@@ -44,7 +45,7 @@ class PostgresTransactionsDataLayer implements ITransactionsDataLayer {
 
 		$sql .= " ORDER BY " . $sortBy . ' ' . $sortOrder;
 
-		$statement = $this->db->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+		$statement = $this->db->prepare($sql, array(\PDO::ATTR_CURSOR => \PDO::CURSOR_FWDONLY));
 		$statement->execute($bindParams);
 
 		return $statement->fetchAll();

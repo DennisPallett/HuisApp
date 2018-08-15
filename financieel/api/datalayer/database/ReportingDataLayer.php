@@ -1,6 +1,7 @@
 <?php
+namespace datalayer\database;
 
-class PostgresReportingDataLayer implements IReportingDataLayer {
+abstract class ReportingDataLayer implements \datalayer\IReportingDataLayer {
 	
 	private $db;
 

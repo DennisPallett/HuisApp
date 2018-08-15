@@ -1,7 +1,9 @@
 <?php
+namespace datalayer\database;
+
 require ('../../lib/importer/Importer.php');
 
-class PostgresImportDataLayer implements IImportDataLayer {
+abstract class ImportDataLayer implements \IImportDataLayer {
 	private $db;
 
 	private $insertStatementQuery;
@@ -32,7 +34,7 @@ class PostgresImportDataLayer implements IImportDataLayer {
 		$this->db->beginTransaction();
 	}
 
-	function saveStatement (BankStatement $statement) {
+	function saveStatement (\BankStatement $statement) {
 		$this->insertStatementQuery->bindValue(1, $statement->id);
 		$this->insertStatementQuery->bindValue(2, $statement->creationDateTime);
 		$this->insertStatementQuery->bindValue(3, $statement->startBalance->date);
@@ -59,7 +61,7 @@ class PostgresImportDataLayer implements IImportDataLayer {
 		}
 	}
 
-	function saveEntry (BankStatement $statement, Entry $entry) {
+	function saveEntry (\BankStatement $statement, \Entry $entry) {
 		$this->insertEntryQuery->bindValue(1, $statement->id);
 		$this->insertEntryQuery->bindValue(2, $entry->id);
 		$this->insertEntryQuery->bindValue(3, $entry->bookingDate);

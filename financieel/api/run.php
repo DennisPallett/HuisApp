@@ -17,7 +17,7 @@ $container['dataLayer'] = function ($c) {
 
 	switch($dbType) {
 		case 'pgsql':
-			return new PostgresDataLayer($db['connectionString'], $db['user'], $db['password']);
+			return new datalayer\postgres\DataLayer($db['connectionString'], $db['user'], $db['password']);
 		case 'mysql':
 			throw new Exception("TODO: MySQL data layer");
 		default:

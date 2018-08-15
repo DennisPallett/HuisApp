@@ -1,10 +1,7 @@
 <?php
-require 'postgres/PostgresReportingDataLayer.php';
-require 'postgres/PostgresStatementsDataLayer.php';
-require 'postgres/PostgresImportDataLayer.php';
-require 'postgres/PostgresTransactionsDataLayer.php';
+namespace datalayer\postgres;
 
-class PostgresDataLayer implements IDataLayer {
+class DataLayer extends \datalayer\database\DataLayer {
 	private $db;
 
 	private $reportingDataLayer;
@@ -16,29 +13,35 @@ class PostgresDataLayer implements IDataLayer {
 	private $transactionsDataLayer;
 
 	public function __construct($connectionString, $user, $password) {
-		$this->db = new PDO($connectionString, $user, $password);
-		$this->db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-		$this->db->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
+		$this->db = new \PDO($connectionString, $user, $password);
+		$this->db->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+		$this->db->setAttribute(\PDO::ATTR_DEFAULT_FETCH_MODE, \PDO::FETCH_ASSOC);
 
-		$this->reportingDataLayer = new PostgresReportingDataLayer($this->db);
-		$this->statementsDataLayer = new PostgresStatementsDataLayer($this->db);
-		$this->importDataLayer = new PostgresImportDataLayer($this->db);
-		$this->transactionsDataLayer = new PostgresTransactionsDataLayer($this->db);
+		parent::__construct($this->db);
+
+		$this->reportingDataLayer = new ReportingDataLayer($this->db);
+		$this->statementsDataLayer = new StatementsDataLayer($this->db);
+		$this->importDataLayer = new ImportDataLayer($this->db);
+		$this->transactionsDataLayer = new TransactionsDataLayer($this->db);
 	}
 
-	function getReportingData () : IReportingDataLayer {
+	public function quoteIdentifier ($identifier) {
+		return '"' . $identifier . '"';
+	}
+
+	function getReportingData () : \datalayer\IReportingDataLayer {
 		return $this->reportingDataLayer;
 	}
 
-	function getStatementsData() : IStatementsDataLayer {
+	function getStatementsData() : \datalayer\IStatementsDataLayer {
 		return $this->statementsDataLayer;
 	}
 
-	function getImportData() : IImportDataLayer {
+	function getImportData() : \IImportDataLayer {
 		return $this->importDataLayer;
 	}
 
-	function getTransactionsData() : ITransactionsDataLayer {
+	function getTransactionsData() : \datalayer\ITransactionsDataLayer {
 		return $this->transactionsDataLayer;
 	}
 
