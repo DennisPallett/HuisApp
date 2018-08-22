@@ -1,7 +1,7 @@
 <?php
 namespace datalayer\database;
 
-require ('../../lib/importer/Importer.php');
+require (dirname(__FILE__) . '/../../../lib/importer/Importer.php');
 
 abstract class ImportDataLayer implements \IImportDataLayer {
 	private $db;

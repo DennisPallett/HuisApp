@@ -1,5 +1,5 @@
 <?php
-namespace datalayer\postgres;
+namespace datalayer\mysql;
 
 class DataLayer extends \datalayer\database\DataLayer {
 	private $db;
@@ -29,7 +29,7 @@ class DataLayer extends \datalayer\database\DataLayer {
 		$split = explode('.', $identifier);
 		$newIdentifier = array();
 		foreach($split as $str) {
-			$newIdentifier[] = '"' . $str . '"';
+			$newIdentifier[] = '`' . $str . '`';
 		}
 
 		return implode('.', $newIdentifier);

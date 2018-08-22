@@ -13,20 +13,20 @@ abstract class DataLayer implements \datalayer\IDataLayer {
 	function getCategoriesAndGroups () {
 		$records = $this->db->query('
 			SELECT 
-				cg."key" AS categorygroup_key,
-				cg.name AS categorygroup_name,
-				c."key" AS category_key,
-				c.name AS category_name
+				' . $this->quoteIdentifier("cg.key") . ' AS ' . $this->quoteIdentifier("categorygroup_key") . ',
+				' . $this->quoteIdentifier("cg.name") . ' AS ' . $this->quoteIdentifier("categorygroup_name") . ',
+				' . $this->quoteIdentifier("c.key") . ' AS ' . $this->quoteIdentifier("category_key") . ',
+				' . $this->quoteIdentifier("c.name") . ' AS ' . $this->quoteIdentifier("category_name") . '
 			FROM categorygroup cg
 			LEFT JOIN category c ON c.group = cg.key
 			UNION
 			SELECT
 				\'misc\' AS categorygroup_key,
 				\'Misc\' AS categorygroup_name,
-				c."key" AS category_key,
-				c.name AS category_name
-			FROM category c
-			WHERE c.group IS NULL
+				' . $this->quoteIdentifier("c.key") . ' AS category_key,
+				' . $this->quoteIdentifier("c.name") . ' AS category_name
+			FROM ' . $this->quoteIdentifier("category") . ' c
+			WHERE ' . $this->quoteIdentifier("c.group") . ' IS NULL
 			ORDER BY
 				categorygroup_name ASC
 		');
