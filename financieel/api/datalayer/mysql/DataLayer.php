@@ -54,15 +54,15 @@ class DataLayer extends \datalayer\database\DataLayer {
 	function getMonths () {
 		$records = $this->db->query("
 			SELECT 
-				date_part('year', value_date) as year,
-				date_part('month', value_date) AS month
+				EXTRACT(YEAR FROM value_date) as year,
+				EXTRACT(MONTH FROM value_date) AS month
 			FROM entry
 			GROUP BY 
-				date_part('year', value_date),
-				date_part('month', value_date)
+				EXTRACT(YEAR FROM value_date),
+				EXTRACT(MONTH FROM value_date)
 			ORDER BY
-				date_part('year', value_date) DESC,
-				date_part('month', value_date) DESC
+				EXTRACT(YEAR FROM value_date) DESC,
+				EXTRACT(MONTH FROM value_date) DESC
 		");
 
 		return $records;

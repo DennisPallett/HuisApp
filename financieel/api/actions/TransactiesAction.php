@@ -1,5 +1,5 @@
 <?php
-require ('../../lib/importer/Classifier.php');
+require_once (dirname(__FILE__) . '/../../lib/importer/Classifier.php');
 
 class TransactiesAction
 {
@@ -36,6 +36,10 @@ class TransactiesAction
 
         $data = array();
 		foreach($records as $record) {
+			$record['is_card_payment'] = ($record['is_card_payment'] == '1');
+			$record['is_cash_withdrawal'] = ($record['is_cash_withdrawal'] == '1');
+			$record['is_shop_sale'] = ($record['is_shop_sale'] == '1');
+
 			$record['shop_card_payment'] = $this->parseShopCardPayment($record);
 			$data[] = $record;
 		}
@@ -73,7 +77,7 @@ class TransactiesAction
 	}
 
 	private function parseShopCardPayment ($record) {
-		if	($record['is_card_payment'] != 1 || $record['is_shop_sale'] != 1)
+		if	($record['is_card_payment'] == false || $record['is_shop_sale'] == false)
 			return null;
 
 		$regex = '/';
@@ -131,8 +135,6 @@ class TransactiesAction
 			$sql .= " AND date_part('year', value_date) = :year";
 			$bindParams[':year'] = $params['year'];
 		}
-
-		
 
 		$sql .= " ORDER BY " . $sortBy . ' ' . $sortOrder;
 
