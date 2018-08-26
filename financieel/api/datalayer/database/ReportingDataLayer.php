@@ -14,7 +14,7 @@ abstract class ReportingDataLayer implements \datalayer\IReportingDataLayer {
 			SELECT 
 				start_balance_date, start_balance_amount,
 				end_balance_date, end_balance_amount
-			FROM \"statement\"
+			FROM statement
 			ORDER BY start_balance_date ASC
 		");
 	}
