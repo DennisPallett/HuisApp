@@ -4,23 +4,23 @@ import { RouterModule, Routes } from '@angular/router';
 import { SharedModule } from '../shared/shared.module';
 
 import { OverzichtComponent } from './overzicht/overzicht.component';
-import { AfschriftenService } from './afschriften.service';
+import { MeterstandenService } from './meterstanden.service';
 import { MonthNamePipe } from '../shared/monthname';
-import { ImporterenComponent } from './importeren/importeren.component';
+import { InvoerenComponent } from './invoeren/invoeren.component';
 
 
 @NgModule({
   declarations: [
     OverzichtComponent,
-    ImporterenComponent
+    InvoerenComponent
   ],
   imports: [
     SharedModule,
     RouterModule.forChild([
-      { path: 'afschriften', component: OverzichtComponent },
-      { path: 'afschriften/importeren', component: ImporterenComponent }
+      { path: 'meterstanden', component: OverzichtComponent },
+      { path: 'meterstanden/invoeren', component: InvoerenComponent }
     ])
   ],
-  providers: [AfschriftenService, MonthNamePipe]
+  providers: [MeterstandenService, MonthNamePipe]
 })
-export class AfschriftenModule { }
+export class MeterstandenModule { }

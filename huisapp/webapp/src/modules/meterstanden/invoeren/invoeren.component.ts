@@ -1,28 +1,34 @@
 import { Component, OnInit } from '@angular/core';
-import { AfschriftenService } from '../afschriften.service';
-import { IImportResult } from '../importresult.model';
+import { MeterstandenService } from '../meterstanden.service';
+import { IMeterstand } from '../meterstand.model';
 
 @Component({
-  templateUrl: './importeren.component.html'
+  templateUrl: './invoeren.component.html'
 })
-export class ImporterenComponent implements OnInit {
+export class InvoerenComponent implements OnInit {
   selectedFiles: FileList = null;
 
   importInProgress: boolean = false;
-
-  importResult: IImportResult[] = null;
 
   importError: string = null;
 
   importErrorCode: number = null;
 
+  newMeterstand: IMeterstand = {} as IMeterstand;
+
+  submitted: boolean = false;
+
   constructor(
-    private afschriftenService: AfschriftenService) {
+    private meterstandenService: MeterstandenService) {
   }
 
   ngOnInit() {
     this.importInProgress = false;
-    this.importResult = null;
+  }
+
+  onSubmit() {
+    this.submitted = true;
+    console.log("YES: " + this.newMeterstand.opnameDatum);
   }
 
   handleFileInput(files: FileList) {
@@ -36,9 +42,8 @@ export class ImporterenComponent implements OnInit {
     this.importError = null;
     this.importErrorCode = null;
 
-    this.afschriftenService.importFiles(this.selectedFiles).subscribe((result) => {
+    this.meterstandenService.updateCategory(1, "test").subscribe((result) => {
       this.importInProgress = false;
-      this.importResult = result;
     }, (error) => {
       this.importInProgress = false;
       this.importError = error.error;

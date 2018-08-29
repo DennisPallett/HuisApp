@@ -3,13 +3,12 @@ import { HttpClient } from "@angular/common/http";
 import { Observable } from "rxjs";
 import { map } from 'rxjs/operators';
 import { environment } from "../../environments/environment";
-import { IAfschrift } from "./afschrift.model";
-import { IImportResult } from "./importresult.model";
+import { IMeterstand } from "./meterstand.model";
 
 @Injectable()
-export class AfschriftenService {
+export class MeterstandenService {
 
-  private apiAction: string = "statements";
+  private apiAction: string = "meterstanden";
 
   constructor(private httpClient: HttpClient) {
   }
@@ -21,27 +20,16 @@ export class AfschriftenService {
     });
   }
 
-  importFiles(files: FileList): Observable<IImportResult[]> {
-    const formData: FormData = new FormData();
-
-    for (let i = 0; i < files.length; i++) {
-      let file = files.item(i);
-      formData.append("file" + i, file, file.name);
-    }
-
-    return this.httpClient.post<IImportResult[]>(environment.apiUrl + this.apiAction + "/import", formData);
+  getAllAfschriften(): Observable<IMeterstand[]> {
+    return this.httpClient.get<IMeterstand[]>(environment.apiUrl + this.apiAction);
   }
 
-  getAllAfschriften(): Observable<IAfschrift[]> {
-    return this.httpClient.get<IAfschrift[]>(environment.apiUrl + this.apiAction);
-  }
-
-  getAfschriftenForMonth(month: number, year: number): Observable<IAfschrift[]> {
+  getAfschriftenForMonth(month: number, year: number): Observable<IMeterstand[]> {
     return this.getAfschriftenForMonthSortedBy(month, year, "start_balance_date", "ASC");
   }
 
-  getAfschriftenForMonthSortedBy(month: number, year: number, sortBy: string, sortOrder: string): Observable<IAfschrift[]> {
-    return this.httpClient.get<IAfschrift[]>(environment.apiUrl + this.apiAction, {
+  getAfschriftenForMonthSortedBy(month: number, year: number, sortBy: string, sortOrder: string): Observable<IMeterstand[]> {
+    return this.httpClient.get<IMeterstand[]>(environment.apiUrl + this.apiAction, {
       params:
         {
           month: month.toString(),

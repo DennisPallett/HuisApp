@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { forEach } from '@angular/router/src/utils/collection';
 import { DatesService } from '../../shared/dates.service';
 import { IMonth } from '../../shared/month.model';
-import { AfschriftenService } from '../afschriften.service';
-import { IAfschrift } from '../afschrift.model';
+import { MeterstandenService } from '../meterstanden.service';
+import { IMeterstand } from '../meterstand.model';
 import { MonthNamePipe } from '../../shared/monthname';
 
 @Component({
@@ -13,7 +13,7 @@ import { MonthNamePipe } from '../../shared/monthname';
 export class OverzichtComponent implements OnInit {
   availableMonths: IMonth[] = [];
 
-  afschriften: IAfschrift[] = [];
+  meterstanden: IMeterstand[] = [];
 
   currentMonthYear: string = '';
 
@@ -24,7 +24,7 @@ export class OverzichtComponent implements OnInit {
   onlyShowUncategorized: boolean = false;
 
   constructor(
-    private afschriftenService: AfschriftenService,
+    private meterstandenService: MeterstandenService,
     private datesService: DatesService,
     private monthName: MonthNamePipe) {
   }
@@ -48,15 +48,15 @@ export class OverzichtComponent implements OnInit {
       + this.monthName.transform(this.currentMonth) + " " + this.currentYear + " wilt verwijderen?"))
       return;
 
-    this.afschriftenService.delete(this.currentMonth, this.currentYear).subscribe((result) => {
-      this.loadAfschriften();
-    })
+    //this.afschriftenService.delete(this.currentMonth, this.currentYear).subscribe((result) => {
+    //  this.loadAfschriften();
+    //})
   }
 
   private loadAfschriften() {
-    this.afschriftenService.getAfschriftenForMonth(this.currentMonth, this.currentYear).subscribe(
+    this.meterstandenService.getAfschriftenForMonth(this.currentMonth, this.currentYear).subscribe(
       (afschriften) => {
-        this.afschriften = afschriften;
+        this.meterstanden = afschriften;
       },
       (error) => {
         console.log(error);

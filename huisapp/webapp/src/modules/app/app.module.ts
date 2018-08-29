@@ -6,7 +6,7 @@ import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 import { NotFoundComponent } from './notfound/notfound.component';
 import { GrafiekenModule } from '../grafieken/grafieken.module';
-import { AfschriftenModule } from '../afschriften/afschriften.module';
+import { MeterstandenModule } from '../meterstanden/meterstanden.module';
 
 @NgModule({
   declarations: [
@@ -17,7 +17,7 @@ import { AfschriftenModule } from '../afschriften/afschriften.module';
   imports: [
     SharedModule,
     GrafiekenModule,
-    AfschriftenModule,
+    MeterstandenModule,
     RouterModule.forRoot([
       { path: 'home', component: HomeComponent },
       { path: '', redirectTo: 'home', pathMatch: 'full' },
