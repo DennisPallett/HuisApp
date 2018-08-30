@@ -47,4 +47,8 @@ export class MeterstandenService {
     });
   }
 
+  insertMeterstand(meterstand: IMeterstand): Observable<boolean> {
+    return this.httpClient.post<boolean>(environment.apiUrl + this.apiAction + "/insert", meterstand);
+  }
+
 }

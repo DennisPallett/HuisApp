@@ -6,48 +6,36 @@ import { IMeterstand } from '../meterstand.model';
   templateUrl: './invoeren.component.html'
 })
 export class InvoerenComponent implements OnInit {
-  selectedFiles: FileList = null;
 
-  importInProgress: boolean = false;
+  errorMessage: string = null;
 
-  importError: string = null;
-
-  importErrorCode: number = null;
+  errorCode: number = null;
 
   newMeterstand: IMeterstand = {} as IMeterstand;
 
   submitted: boolean = false;
+
+  result: boolean = false;
 
   constructor(
     private meterstandenService: MeterstandenService) {
   }
 
   ngOnInit() {
-    this.importInProgress = false;
   }
 
   onSubmit() {
     this.submitted = true;
-    console.log("YES: " + this.newMeterstand.opnameDatum);
-  }
 
-  handleFileInput(files: FileList) {
-    this.selectedFiles = files;
-  }
+    this.errorMessage = null;
+    this.errorCode = null;
 
-  startImport() {
-    if (this.selectedFiles.length == 0) return false;
-
-    this.importInProgress = true;
-    this.importError = null;
-    this.importErrorCode = null;
-
-    this.meterstandenService.updateCategory(1, "test").subscribe((result) => {
-      this.importInProgress = false;
-    }, (error) => {
-      this.importInProgress = false;
-      this.importError = error.error;
-      this.importErrorCode = error.status;
+    this.meterstandenService.insertMeterstand(this.newMeterstand).subscribe((result) => {
+      this.result = result;
+    }, (response) => {
+      this.result = false;
+      this.errorMessage = response.error.message;
+      this.errorCode = response.error.code;
     });
   }
 

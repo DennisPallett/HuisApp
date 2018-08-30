@@ -52,7 +52,7 @@ class MeterstandenAction
 		if (!$validator->isValid($meterstand))
 		{
 			return $response
-				->withJson(array('error' => array('code' => 'INVALID', 'message' => 'Invalid/missing data provided')))
+				->withJson(array('code' => 'INVALID', 'message' => 'Invalid/missing data provided'))
 				->withStatus(400);
 		}
 
@@ -60,7 +60,7 @@ class MeterstandenAction
 			$this->container->dataLayer->getMeterstandenData()->insertMeterstand($meterstand);
 		} catch (\datalayer\DuplicateMeterstandException $ex) {
 			return $response
-					->withJson(array('error' => array('code' => 'DUPLICATE', 'message' => 'Meterstand already exists for opnamedatum')))
+					->withJson(array('code' => 'DUPLICATE', 'message' => 'Meterstand already exists for opnamedatum'))
 					->withStatus(422);
 		}
 

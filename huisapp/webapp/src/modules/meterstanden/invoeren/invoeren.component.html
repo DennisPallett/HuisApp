@@ -2,8 +2,8 @@
 
 <hr />
 
-<div class="alert alert-danger" role="alert" *ngIf="importError != null">
-  Het invoeren is mislukt: {{importError}} ({{importErrorCode}})
+<div class="alert alert-danger" role="alert" *ngIf="errorMessage != null">
+  Het invoeren is mislukt: {{errorMessage}} ({{errorCode}})
 </div>
 
 <form [hidden]="submitted" (ngSubmit)="onSubmit()" #invoerenForm="ngForm">
@@ -35,27 +35,6 @@
   <button type="submit" class="btn btn-primary" [disabled]="!invoerenForm.form.valid">Invoeren</button>
 </form>
 
-
-<div *ngIf="importInProgress == true">
-  <p>Bezig met importeren van de gekozen bestanden...</p>
-
-  <div class="progress">
-    <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 75%"></div>
-  </div>
-</div>
-
-<div *ngIf="importResult != null">
-  <form>
-    <div class="form-group">
-      <label>Import resultaat:</label>
-      <div class="form-control">
-        <ul style="margin-bottom: 0;">
-          <li *ngFor="let file of importResult">
-            {{ file.name }}:
-            <span class="{{file.success ? 'text-success' : 'text-danger'}}">{{file.success ? 'SUCCESS' : 'FAIL - ' + file.error}}</span>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </form>
+<div *ngIf="result == true">
+  <p>De nieuwe meterstand is opgeslagen!</p>
 </div>
