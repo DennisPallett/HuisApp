@@ -5,5 +5,5 @@ interface IMeterstandenDataLayer {
 
 	function insertMeterstand(\business\model\Meterstand $meterstand);
 
-	function getMeterstanden($year, $month, $sortBy, $sortOrder);
+	function getMeterstanden($sortBy, $sortOrder);
 }

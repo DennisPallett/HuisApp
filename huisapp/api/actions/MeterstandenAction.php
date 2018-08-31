@@ -11,15 +11,6 @@ class MeterstandenAction
     public function __invoke($request, $response, $args) {
 		$params = $request->getQueryParams();
 
-		$year = null;
-		$month = null;
-
-		if (!empty($params['month']) && is_numeric($params['month'])) 
-			$month = $params['month'];
-
-		if (!empty($params['year']) && is_numeric($params['year'])) 
-			$year = $params['year'];
-
 		$sortBy = "";
 		$sortOrder = "";
 
@@ -31,11 +22,17 @@ class MeterstandenAction
 
 		if (!in_array($sortBy, array('opname_datum'))) $sortBy = 'opname_datum';
 
-        $records = $this->container->dataLayer->getMeterstandenData()->getMeterstanden($year, $month, $sortBy, $sortOrder);
+        $records = $this->container->dataLayer->getMeterstandenData()->getMeterstanden($sortBy, $sortOrder);
 
         $data = array();
 		foreach($records as $record) {
-			$data[] = $record;
+			$data[] = array(
+				'opnameDatum' => $record['opname_datum'],
+				'elektraE1' => $record['stand_elektra_e1'],
+				'elektraE2' =>  $record['stand_elektra_e2'],
+				'gas' =>  $record['stand_gas'],
+				'water' =>  $record['stand_water']
+			);
 		}
 
 		return $response->withJson($data);
