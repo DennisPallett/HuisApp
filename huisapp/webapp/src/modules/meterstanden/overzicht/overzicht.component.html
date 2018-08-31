@@ -22,13 +22,12 @@
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let afschrift of afschriften">
-      <td>{{ afschrift.id }}</td>
-      <td>{{ afschrift.start_balance_date | amDateFormat:'dddd, D MMM' }}</td>
-      <td>&euro;&nbsp;{{ afschrift.start_balance_amount }}</td>
-      <td>{{ afschrift.end_balance_date | amDateFormat:'dddd, D MMM' }}</td>
-      <td>&euro;&nbsp;{{ afschrift.end_balance_amount }}</td>
-      <td>{{ afschrift.entry_count }}</td>
+    <tr *ngFor="let meterstand of meterstanden">
+      <td>{{ meterstand.opnameDatum | amDateFormat:'dddd, D MMM' }}</td>
+      <td>{{ meterstand.elektraE1 }}</td>
+      <td>{{ meterstand.elektraE2 }}</td>
+      <td>{{ meterstand.gas }}</td>
+      <td>{{ meterstand.water }}</td>
     </tr>
   </tbody>
 </table>

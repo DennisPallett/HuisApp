@@ -4,13 +4,7 @@ namespace datalayer\mysql;
 class DataLayer extends \datalayer\database\DataLayer {
 	private $db;
 
-	private $reportingDataLayer;
-
-	private $statementsDataLayer;
-
-	private $importDataLayer;
-
-	private $transactionsDataLayer;
+	private $meterstandenDataLayer;
 
 	public function __construct($connectionString, $user, $password) {
 		$this->db = new \PDO($connectionString, $user, $password);
@@ -19,10 +13,11 @@ class DataLayer extends \datalayer\database\DataLayer {
 
 		parent::__construct($this->db);
 
-		$this->reportingDataLayer = new ReportingDataLayer($this->db);
-		$this->statementsDataLayer = new StatementsDataLayer($this->db);
-		$this->importDataLayer = new ImportDataLayer($this->db);
-		$this->transactionsDataLayer = new TransactionsDataLayer($this->db);
+		$this->meterstandenDataLayer = new \datalayer\database\MeterstandenDataLayer($this, $this->db);
+	}
+
+	public function getMeterstandenData ()  : \datalayer\IMeterstandenDataLayer {
+		return $this->meterstandenDataLayer;
 	}
 
 	public function quoteIdentifier ($identifier) {
@@ -35,36 +30,4 @@ class DataLayer extends \datalayer\database\DataLayer {
 		return implode('.', $newIdentifier);
 	}
 
-	function getReportingData () : \datalayer\IReportingDataLayer {
-		return $this->reportingDataLayer;
-	}
-
-	function getStatementsData() : \datalayer\IStatementsDataLayer {
-		return $this->statementsDataLayer;
-	}
-
-	function getImportData() : \IImportDataLayer {
-		return $this->importDataLayer;
-	}
-
-	function getTransactionsData() : \datalayer\ITransactionsDataLayer {
-		return $this->transactionsDataLayer;
-	}
-
-	function getMonths () {
-		$records = $this->db->query("
-			SELECT 
-				EXTRACT(YEAR FROM value_date) as year,
-				EXTRACT(MONTH FROM value_date) AS month
-			FROM entry
-			GROUP BY 
-				EXTRACT(YEAR FROM value_date),
-				EXTRACT(MONTH FROM value_date)
-			ORDER BY
-				EXTRACT(YEAR FROM value_date) DESC,
-				EXTRACT(MONTH FROM value_date) DESC
-		");
-
-		return $records;
-	}
 }
