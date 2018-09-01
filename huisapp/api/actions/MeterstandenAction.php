@@ -61,6 +61,49 @@ class MeterstandenAction
 					->withStatus(422);
 		}
 
+		$this->recalculateVerbruik();
+
 		return $response->withJson(true);
+	}
+
+	private function recalculateVerbruik () {
+		$this->container->dataLayer->getMeterstandenData()->clearVerbruik();
+
+		$records = $this->container->dataLayer->getMeterstandenData()->getMeterstanden("opname_datum", "ASC");
+		$meterstanden = array();
+		foreach($records as $record) {
+			$meterstanden[] = $record;
+		}
+
+		// TODO: move business logic to a business layer
+		for($i=0; $i < count($meterstanden); $i++) {
+			if ($i == count($meterstanden)-1) continue;
+
+			$currentMeterstand = $meterstanden[$i];
+			$nextMeterstand = $meterstanden[$i+1];
+
+			$period = new \DatePeriod(new \DateTime($currentMeterstand['opname_datum']), new \DateInterval('P1D'), new \DateTime($nextMeterstand['opname_datum']));
+
+			$days = array();
+			foreach ($period as $key => $value) {
+				$days[] = $value->format('Y-m-d');
+			}
+
+			$verbruikElektraE1 = ($nextMeterstand['stand_elektra_e1'] - $currentMeterstand['stand_elektra_e1']) / count($days);
+			$verbruikElektraE2 = ($nextMeterstand['stand_elektra_e2'] - $currentMeterstand['stand_elektra_e2']) / count($days);
+			$verbruikWater = ($nextMeterstand['stand_water'] - $currentMeterstand['stand_water']) / count($days);
+			$verbruikGas = ($nextMeterstand['stand_gas'] - $currentMeterstand['stand_gas']) / count($days);
+
+			foreach($days as $day) {
+				$verbruik = new \business\model\Verbruik();
+				$verbruik->datum = $day;
+				$verbruik->elektraE1 = $verbruikElektraE1;
+				$verbruik->elektraE2 = $verbruikElektraE2;
+				$verbruik->water = $verbruikWater;
+				$verbruik->gas = $verbruikGas;
+
+				$this->container->dataLayer->getMeterstandenData()->insertVerbruik($verbruik);
+			}
+		}
 	}
 }

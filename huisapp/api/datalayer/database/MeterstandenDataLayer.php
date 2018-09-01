@@ -11,6 +11,42 @@ class MeterstandenDataLayer implements \datalayer\IMeterstandenDataLayer {
 		$this->datalayer = $datalayer;
 	}
 
+	public function clearVerbruik () {
+		$this->db->exec("TRUNCATE TABLE " . $this->datalayer->quoteIdentifier("verbruik"));
+	}
+
+	public function insertVerbruik(\business\model\Verbruik $verbruik) {
+		$sql = "INSERT INTO " . $this->datalayer->quoteIdentifier("verbruik") . " (
+		" . $this->datalayer->quoteIdentifier("datum") . ", 
+		" . $this->datalayer->quoteIdentifier("verbruik_water") . ", 
+		" . $this->datalayer->quoteIdentifier("verbruik_gas") . ", 
+		" . $this->datalayer->quoteIdentifier("verbruik_elektra_e1") . ", 
+		" . $this->datalayer->quoteIdentifier("verbruik_elektra_e2") . "
+		) VALUES (:datum, :water, :gas, :elektraE1, :elektraE2)";
+
+		$statement = $this->db->prepare($sql);
+
+		$ret = false;
+		try {
+			$ret = $statement->execute((array)$verbruik);
+		} catch (\Exception $e) {
+		}
+
+		if (!$ret) {
+			$errorInfo = $statement->errorInfo();
+			$errorCode = $errorInfo['0'];
+			$errorMessage = $errorInfo['2'];
+
+			if ($errorCode == '23505') {
+				throw new \datalayer\DuplicateVerbruikException();
+			} else {
+				throw new Exception($errorMessage . ' (' . $errorCode . ')');
+			}
+		}
+
+		return true;
+	}
+
 	public function insertMeterstand(\business\model\Meterstand $meterstand) {
 		$sql = "INSERT INTO " . $this->datalayer->quoteIdentifier("meterstanden") . " (
 		" . $this->datalayer->quoteIdentifier("opname_datum") . ", 
