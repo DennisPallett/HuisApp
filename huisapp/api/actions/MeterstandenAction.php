@@ -8,7 +8,7 @@ class MeterstandenAction
 		$this->container = $container;
 	}
 
-    public function __invoke($request, $response, $args) {
+    public function getList($request, $response, $args) {
 		$params = $request->getQueryParams();
 
 		$sortBy = "";
@@ -38,6 +38,33 @@ class MeterstandenAction
 		return $response->withJson($data);
 	}
 
+	public function getSingle ($request, $response, $args) {
+		if (empty($args['opnameDatum'])) {
+			return $response
+				->withJson(array('code' => 'MISSING_OPNAMEDATUM', 'message' => 'Invalid/missing opnameDatum'))
+				->withStatus(400);
+		}
+
+		$opnameDatum = $args['opnameDatum'];
+
+		$meterstand = $this->container->dataLayer->getMeterstandenData()->getMeterstand($opnameDatum);
+		if ($meterstand == null) {
+			return $response
+				->withJson(array('code' => 'UNKNOWN_METERSTAND', 'message' => 'No existing meterstand with specified opnameDatum'))
+				->withStatus(404);
+		}
+
+		$data = array(
+			'opnameDatum' => $meterstand->opnameDatum,
+			'elektraE1' => $meterstand->elektraE1,
+			'elektraE2' => $meterstand->elektraE2,
+			'gas' => $meterstand->gas,
+			'water' => $meterstand->water
+		);
+
+		return $response->withJson($data);
+	}
+
 	public function insert ($request, $response, $args) {
 		$params = $request->getParsedBody();
 
@@ -60,6 +87,61 @@ class MeterstandenAction
 					->withJson(array('code' => 'DUPLICATE', 'message' => 'Meterstand already exists for opnamedatum'))
 					->withStatus(422);
 		}
+
+		$this->recalculateVerbruik();
+
+		return $response->withJson(true);
+	}
+
+	public function update ($request, $response, $args) {
+		if (empty($args['opnameDatum'])) {
+			return $response
+				->withJson(array('code' => 'MISSING_OPNAMEDATUM', 'message' => 'Invalid/missing opnameDatum'))
+				->withStatus(400);
+		}
+
+		$opnameDatum = $args['opnameDatum'];
+
+		$meterstand = $this->container->dataLayer->getMeterstandenData()->getMeterstand($opnameDatum);
+		if ($meterstand == null) {
+			return $response
+				->withJson(array('code' => 'UNKNOWN_METERSTAND', 'message' => 'No existing meterstand with specified opnameDatum'))
+				->withStatus(404);
+		}
+
+		$params = $request->getParsedBody();
+		$meterstand->setProperties($params);
+
+		$validator = new \business\validators\MeterstandValidator();
+
+		if (!$validator->isValid($meterstand))
+		{
+			return $response
+				->withJson(array('code' => 'INVALID', 'message' => 'Invalid/missing data provided'))
+				->withStatus(400);
+		}
+
+		try {
+			$this->container->dataLayer->getMeterstandenData()->updateMeterstand($opnameDatum, $meterstand);
+		} catch (\datalayer\DuplicateMeterstandException $ex) {
+			return $response
+					->withJson(array('code' => 'DUPLICATE', 'message' => 'Meterstand already exists for opnamedatum'))
+					->withStatus(422);
+		}
+
+		$this->recalculateVerbruik();
+
+		return $response->withJson(true);
+	}
+
+	public function delete ($request, $response, $args) {
+		if (empty($args['opnameDatum'])) {
+			return $response
+				->withJson(array('code' => 'MISSING_OPNAMEDATUM', 'message' => 'Invalid/missing opnameDatum'))
+				->withStatus(400);
+		}
+
+		$this->container->dataLayer->getMeterstandenData()->deleteMeterstand($args['opnameDatum']);
 
 		$this->recalculateVerbruik();
 

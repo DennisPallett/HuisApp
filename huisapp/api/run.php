@@ -25,7 +25,11 @@ $container['dataLayer'] = function ($c) {
 	}
 };
 
-$app->get('/meterstanden', MeterstandenAction::class);
-$app->post('/meterstanden/insert', MeterstandenAction::class . ':insert');
+// Meterstanden actions:
+$app->get('/meterstanden', MeterstandenAction::class . ':getList');
+$app->get('/meterstanden/{opnameDatum}', MeterstandenAction::class . ':getSingle');
+$app->post('/meterstanden', MeterstandenAction::class . ':insert');
+$app->post('/meterstanden/{opnameDatum}', MeterstandenAction::class . ':update');
+$app->delete('/meterstanden/{opnameDatum}', MeterstandenAction::class . ':delete');
 
 $app->run();

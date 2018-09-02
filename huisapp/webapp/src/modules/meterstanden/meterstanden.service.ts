@@ -13,42 +13,24 @@ export class MeterstandenService {
   constructor(private httpClient: HttpClient) {
   }
 
-  delete(month: number, year: number): Observable<boolean> {
-    return this.httpClient.post<boolean>(environment.apiUrl + this.apiAction + "/delete", {
-      month: month,
-      year: year
-    });
-  }
-
-  getAllAfschriften(): Observable<IMeterstand[]> {
+  getMeterstanden(): Observable<IMeterstand[]> {
     return this.httpClient.get<IMeterstand[]>(environment.apiUrl + this.apiAction);
   }
 
-  getAfschriftenForMonth(month: number, year: number): Observable<IMeterstand[]> {
-    return this.getAfschriftenForMonthSortedBy(month, year, "start_balance_date", "ASC");
-  }
-
-  getAfschriftenForMonthSortedBy(month: number, year: number, sortBy: string, sortOrder: string): Observable<IMeterstand[]> {
-    return this.httpClient.get<IMeterstand[]>(environment.apiUrl + this.apiAction, {
-      params:
-        {
-          month: month.toString(),
-          year: year.toString(),
-          sortby: sortBy,
-          sortorder: sortOrder
-        }
-    });
-  }
-
-  updateCategory(transactieId: number, category: string): Observable<boolean> {
-    return this.httpClient.post<boolean>(environment.apiUrl + this.apiAction + "/update-category", {
-      id: transactieId,
-      category: category 
-    });
+  getMeterstand(opnameDatum: string): Observable<IMeterstand> {
+    return this.httpClient.get<IMeterstand>(environment.apiUrl + this.apiAction + "/" + opnameDatum);
   }
 
   insertMeterstand(meterstand: IMeterstand): Observable<boolean> {
-    return this.httpClient.post<boolean>(environment.apiUrl + this.apiAction + "/insert", meterstand);
+    return this.httpClient.post<boolean>(environment.apiUrl + this.apiAction, meterstand);
+  }
+
+  saveMeterstand(meterstand: IMeterstand): Observable<boolean> {
+    return this.httpClient.post<boolean>(environment.apiUrl + this.apiAction + "/" + meterstand.opnameDatum, meterstand);
+  }
+
+  delete(meterstand: IMeterstand): Observable<boolean> {
+    return this.httpClient.delete<boolean>(environment.apiUrl + this.apiAction + "/" + meterstand.opnameDatum, {});
   }
 
 }

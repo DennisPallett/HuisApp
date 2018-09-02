@@ -15,6 +15,70 @@ class MeterstandenDataLayer implements \datalayer\IMeterstandenDataLayer {
 		$this->db->exec("TRUNCATE TABLE " . $this->datalayer->quoteIdentifier("verbruik"));
 	}
 
+	function getMeterstand($opnameDatum) {
+		$sql = "SELECT * FROM " . $this->datalayer->quoteIdentifier("meterstanden") .
+			" WHERE opname_datum = :opnameDatum";
+
+		$statement = $this->db->prepare($sql);
+
+		$ret = $statement->execute(array('opnameDatum' => $opnameDatum));
+
+		$row = $statement->fetch();
+		if ($row == false)
+			return null;
+
+		$meterstand = new \business\model\Meterstand();
+		$meterstand->opnameDatum = $row['opname_datum'];
+		$meterstand->water = $row['stand_water'];
+		$meterstand->gas = $row['stand_gas'];
+		$meterstand->elektraE1 = $row['stand_elektra_e1'];
+		$meterstand->elektraE2 = $row['stand_elektra_e2'];
+
+		return $meterstand;
+	}
+
+	function updateMeterstand($opnameDatum, \business\model\Meterstand $meterstand) {
+		$sql = "UPDATE " . $this->datalayer->quoteIdentifier("meterstanden") . " SET " .
+			$this->datalayer->quoteIdentifier("opname_datum") . " = :opnameDatum, " .
+			$this->datalayer->quoteIdentifier("stand_water") . " = :water, " .
+			$this->datalayer->quoteIdentifier("stand_gas") . " = :gas, " .
+			$this->datalayer->quoteIdentifier("stand_elektra_e1") . " = :elektraE1, " .
+			$this->datalayer->quoteIdentifier("stand_elektra_e2") . " = :elektraE2" .
+			" WHERE opname_datum = :opnameDatum";
+
+		$statement = $this->db->prepare($sql);
+
+		$ret = false;
+		try {
+			$ret = $statement->execute((array)$meterstand);
+		} catch (\Exception $e) {
+		}
+
+		if (!$ret) {
+			$errorInfo = $statement->errorInfo();
+			$errorCode = $errorInfo['0'];
+			$errorMessage = $errorInfo['2'];
+
+			if ($errorCode == '23505') {
+				throw new \datalayer\DuplicateMeterstandException();
+			} else {
+				throw new Exception($errorMessage . ' (' . $errorCode . ')');
+			}
+		}
+
+		return true;
+	}
+
+	public function deleteMeterstand($opnameDatum) {
+		$sql = "DELETE FROM " . $this->datalayer->quoteIdentifier("meterstanden") .
+			" WHERE opname_datum = :opnameDatum";
+
+		$statement = $this->db->prepare($sql);
+
+		$ret = $statement->execute(array('opnameDatum' => $opnameDatum));
+		return $ret;
+	}
+
 	public function insertVerbruik(\business\model\Verbruik $verbruik) {
 		$sql = "INSERT INTO " . $this->datalayer->quoteIdentifier("verbruik") . " (
 		" . $this->datalayer->quoteIdentifier("datum") . ", 

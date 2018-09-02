@@ -1,66 +1,41 @@
 import { Component, OnInit } from '@angular/core';
-import { forEach } from '@angular/router/src/utils/collection';
-import { DatesService } from '../../shared/dates.service';
-import { IMonth } from '../../shared/month.model';
 import { MeterstandenService } from '../meterstanden.service';
 import { IMeterstand } from '../meterstand.model';
-import { MonthNamePipe } from '../../shared/monthname';
+import * as moment from 'moment';
+import nl from '@angular/common/locales/nl';
+import { registerLocaleData } from '@angular/common';
 
 @Component({
   templateUrl: './overzicht.component.html',
   styleUrls: ['./overzicht.component.css']
 })
 export class OverzichtComponent implements OnInit {
-  availableMonths: IMonth[] = [];
 
   meterstanden: IMeterstand[] = [];
 
-  currentMonthYear: string = '';
-
-  currentMonth: number = 0;
-
-  currentYear: number = 0;
-
-  onlyShowUncategorized: boolean = false;
-
   constructor(
-    private meterstandenService: MeterstandenService,
-    private datesService: DatesService,
-    private monthName: MonthNamePipe) {
+    private meterstandenService: MeterstandenService) {
   }
 
   ngOnInit() {
-    this.datesService.getMonths().subscribe((months) => {
-      this.availableMonths = months;
+    registerLocaleData(nl);
+    this.loadMeterstanden();
+  }
+
+  private loadMeterstanden() {
+    this.meterstandenService.getMeterstanden().subscribe((meterstanden) => {
+      this.meterstanden = meterstanden;
     });
   }
 
-  public changeMonth() {
-    var split = this.currentMonthYear.split('-');
-    this.currentMonth = parseInt(split[0]);
-    this.currentYear = parseInt(split[1]);
-
-    this.loadAfschriften();
-  }
-
-  public deleteAfschriften() {
-    if (!window.confirm("Weet je zeker dat je alle afschriften voor "
-      + this.monthName.transform(this.currentMonth) + " " + this.currentYear + " wilt verwijderen?"))
+  public deleteMeterstand(meterstand: IMeterstand) {
+    if (!window.confirm("Weet je zeker dat je de meterstand voor " + moment(meterstand.opnameDatum).format('D MMMM YYYY') + " wilt verwijderen?"))
       return;
 
-    //this.afschriftenService.delete(this.currentMonth, this.currentYear).subscribe((result) => {
-    //  this.loadAfschriften();
-    //})
-  }
+    this.meterstandenService.delete(meterstand).subscribe((result) => {
+      this.loadMeterstanden();
+    })
 
-  private loadAfschriften() {
-    this.meterstandenService.getAfschriftenForMonth(this.currentMonth, this.currentYear).subscribe(
-      (afschriften) => {
-        this.meterstanden = afschriften;
-      },
-      (error) => {
-        console.log(error);
-      });
   }
   
 }
