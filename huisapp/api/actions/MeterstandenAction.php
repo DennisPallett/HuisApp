@@ -149,7 +149,7 @@ class MeterstandenAction
 	}
 
 	private function recalculateVerbruik () {
-		$this->container->dataLayer->getMeterstandenData()->clearVerbruik();
+		$this->container->dataLayer->getVerbruikData()->clearVerbruik();
 
 		$records = $this->container->dataLayer->getMeterstandenData()->getMeterstanden("opname_datum", "ASC");
 		$meterstanden = array();
@@ -184,7 +184,7 @@ class MeterstandenAction
 				$verbruik->water = $verbruikWater;
 				$verbruik->gas = $verbruikGas;
 
-				$this->container->dataLayer->getMeterstandenData()->insertVerbruik($verbruik);
+				$this->container->dataLayer->getVerbruikData()->insertVerbruik($verbruik);
 			}
 		}
 	}

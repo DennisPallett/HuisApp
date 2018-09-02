@@ -5,4 +5,6 @@ interface IDataLayer {
 
 	function getMeterstandenData() : IMeterstandenDataLayer;
 
+	function getVerbruikData() : IVerbruikDataLayer;
+
 }

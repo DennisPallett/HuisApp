@@ -32,4 +32,6 @@ $app->post('/meterstanden', MeterstandenAction::class . ':insert');
 $app->post('/meterstanden/{opnameDatum}', MeterstandenAction::class . ':update');
 $app->delete('/meterstanden/{opnameDatum}', MeterstandenAction::class . ':delete');
 
+$app->get('/verbruik/per-maand', VerbruikAction::class . ':getPerMaand');
+
 $app->run();
