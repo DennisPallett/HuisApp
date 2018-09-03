@@ -1,16 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { forEach } from '@angular/router/src/utils/collection';
 import { Chart } from 'angular-highcharts';
 import * as Highcharts from 'highcharts';
-import { MeterstandenService } from '../meterstanden.service';
 import { VerbruikService } from '../verbruik.service';
 import * as moment from 'moment';
 
 @Component({
   template: '<div [chart]="chart"></div>',
-  selector: 'gas-verbruik-chart'
+  selector: 'verbruik-chart'
 })
-export class GasVerbruikChartComponent implements OnInit {
+export class VerbruikChartComponent implements OnInit {
   chart = new Chart({
     chart: {
       type: 'column'
@@ -87,17 +85,6 @@ export class GasVerbruikChartComponent implements OnInit {
         chart.addSeries(elektraE2Serie);
       });
     });
-
-    //this.reportingService.getCategoryByMonth().subscribe(
-    //  (categoriesByMonth) => {
-    //    this.chart.ref$.subscribe((chart) => {
-    //      chart.hideLoading()
-    //      chart.xAxis[0].setCategories(categoriesByMonth.categories);
-    //      categoriesByMonth.series.forEach(function (serie) {
-    //        chart.addSeries(serie);
-    //      });
-    //    });
-    //  });
   }
 
 }

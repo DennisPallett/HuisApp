@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiUrl: 'http://dennismerle.pallett.nl/financieel/api/'
+  apiUrl: 'https://dennismerle.pallett.nl/huisapp/api/'
 };

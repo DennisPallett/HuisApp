@@ -8,10 +8,10 @@ import { MeterstandenService } from './meterstanden.service';
 import { MonthNamePipe } from '../shared/monthname';
 import { InvoerenComponent } from './invoeren/invoeren.component';
 import { AanpassenComponent } from './aanpassen/aanpassen.component';
-import { GrafiekenComponent } from './grafieken/grafieken.component';
-import { GasVerbruikChartComponent } from './grafieken/gasverbruikChart.component';
 import { ChartModule } from 'angular-highcharts';
 import { VerbruikService } from './verbruik.service';
+import { VerbruikComponent } from './verbruik/verbruik.component';
+import { VerbruikChartComponent } from './verbruik/verbruikChart.component';
 
 
 @NgModule({
@@ -19,8 +19,8 @@ import { VerbruikService } from './verbruik.service';
     OverzichtComponent,
     InvoerenComponent,
     AanpassenComponent,
-    GrafiekenComponent,
-    GasVerbruikChartComponent
+    VerbruikComponent,
+    VerbruikChartComponent
   ],
   imports: [
     SharedModule,
@@ -29,7 +29,7 @@ import { VerbruikService } from './verbruik.service';
       { path: 'meterstanden', component: OverzichtComponent },
       { path: 'meterstanden/invoeren', component: InvoerenComponent },
       { path: 'meterstanden/aanpassen/:opnameDatum', component: AanpassenComponent },
-      { path: 'meterstanden/grafieken', component: GrafiekenComponent },
+      { path: 'meterstanden/verbruik', component: VerbruikComponent },
     ])
   ],
   providers: [MeterstandenService, MonthNamePipe, VerbruikService]
