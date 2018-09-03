@@ -5,7 +5,6 @@ import { SharedModule } from '../shared/shared.module';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 import { NotFoundComponent } from './notfound/notfound.component';
-import { GrafiekenModule } from '../grafieken/grafieken.module';
 import { MeterstandenModule } from '../meterstanden/meterstanden.module';
 
 @NgModule({
@@ -16,7 +15,6 @@ import { MeterstandenModule } from '../meterstanden/meterstanden.module';
   ],
   imports: [
     SharedModule,
-    GrafiekenModule,
     MeterstandenModule,
     RouterModule.forRoot([
       { path: 'home', component: HomeComponent },

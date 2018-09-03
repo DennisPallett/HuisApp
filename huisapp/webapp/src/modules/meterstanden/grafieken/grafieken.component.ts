@@ -4,6 +4,8 @@ import { Component } from '@angular/core';
   templateUrl: './grafieken.component.html',
   styleUrls: ['./grafieken.component.css']
 })
-export class GrafiekenComponent{
+export class GrafiekenComponent {
 
+  
+  
 }

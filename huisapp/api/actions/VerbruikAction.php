@@ -14,12 +14,12 @@ class VerbruikAction
 		$data = array();
 		foreach($records as $record) {
 			$data[] = array(
-				'jaar' => $record['year'],
-				'maand' => $record['month'],
-				'elektraE1' => $record['verbruik_elektra_e1'],
-				'elektraE2' =>  $record['verbruik_elektra_e2'],
-				'gas' =>  $record['verbruik_gas'],
-				'water' =>  $record['verbruik_water']
+				'jaar' => (int)$record['year'],
+				'maand' => (int)$record['month'],
+				'elektraE1' => (double)$record['verbruik_elektra_e1'],
+				'elektraE2' =>  (double)$record['verbruik_elektra_e2'],
+				'gas' =>  (double)$record['verbruik_gas'],
+				'water' =>  (double)$record['verbruik_water']
 			);
 		}
 
