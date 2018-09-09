@@ -11,7 +11,6 @@ import { AanpassenComponent } from './aanpassen/aanpassen.component';
 import { ChartModule } from 'angular-highcharts';
 import { VerbruikService } from './verbruik.service';
 import { VerbruikComponent } from './verbruik/verbruik.component';
-import { VerbruikChartComponent } from './verbruik/verbruikChart.component';
 
 
 @NgModule({
@@ -19,8 +18,7 @@ import { VerbruikChartComponent } from './verbruik/verbruikChart.component';
     OverzichtComponent,
     InvoerenComponent,
     AanpassenComponent,
-    VerbruikComponent,
-    VerbruikChartComponent
+    VerbruikComponent
   ],
   imports: [
     SharedModule,
