@@ -1,2 +1,2 @@
-# DennisPallett
-This repository contains all my personal projects and code
+# HuisApp
+This repository contains an Angular app & PHP REST API for house data and management.
