@@ -18,7 +18,7 @@ class MeterstandenAction
 		if (!empty($params['sortorder'])) $sortOrder = $params['sortorder'];
 
 		$sortOrder = strtoupper($sortOrder);
-		if ($sortOrder != 'ASC' && $sortOrder != 'DESC') $sortOrder = 'ASC';
+		if ($sortOrder != 'ASC' && $sortOrder != 'DESC') $sortOrder = 'DESC';
 
 		if (!in_array($sortBy, array('opname_datum'))) $sortBy = 'opname_datum';
 

@@ -61,6 +61,16 @@ export class VerbruikComponent implements OnInit {
   constructor(private verbruikService: VerbruikService) {
   }
 
+  sortVerbruikDesc(a: IVerbruikPerMaand, b: IVerbruikPerMaand): number {
+    if (a.jaar < b.jaar) return 1;
+    if (a.jaar > b.jaar) return -1;
+
+    if (a.maand < b.maand) return 1;
+    if (a.maand > b.maand) return -1;
+
+    return 0;
+  }
+
   ngOnInit() {
     registerLocaleData(nl);
 
@@ -69,7 +79,9 @@ export class VerbruikComponent implements OnInit {
     });
 
     this.verbruikService.getPerMaand().subscribe((verbruik) => {
-      this.verbruik = verbruik;
+      this.verbruik = verbruik.slice(0);
+
+      this.verbruik.sort(this.sortVerbruikDesc);
 
       var categories = [];
       var gasSerie = { 'name': 'Gas (m3)', 'data': [], 'stack': 'gas', color: '#99ccff' };
