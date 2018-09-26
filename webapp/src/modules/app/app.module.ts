@@ -6,6 +6,7 @@ import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 import { NotFoundComponent } from './notfound/notfound.component';
 import { MeterstandenModule } from '../meterstanden/meterstanden.module';
+import { TemperatuurModule } from '../temperatuur/temperatuur.module';
 
 @NgModule({
   declarations: [
@@ -16,6 +17,7 @@ import { MeterstandenModule } from '../meterstanden/meterstanden.module';
   imports: [
     SharedModule,
     MeterstandenModule,
+    TemperatuurModule,
     RouterModule.forRoot([
       { path: 'home', component: HomeComponent },
       { path: '', redirectTo: 'home', pathMatch: 'full' },
