@@ -25,6 +25,8 @@ $container['dataLayer'] = function ($c) {
 	}
 };
 
+require_once(dirname(__FILE__) . '/../lib/importer/Importer.php');
+
 // Meterstanden actions:
 $app->get('/meterstanden', MeterstandenAction::class . ':getList');
 $app->get('/meterstanden/{opnameDatum}', MeterstandenAction::class . ':getSingle');
@@ -33,5 +35,8 @@ $app->post('/meterstanden/{opnameDatum}', MeterstandenAction::class . ':update')
 $app->delete('/meterstanden/{opnameDatum}', MeterstandenAction::class . ':delete');
 
 $app->get('/verbruik/per-maand', VerbruikAction::class . ':getPerMaand');
+
+
+$app->post('/temperatuur/import', TemperatuurAction::class . ':import');
 
 $app->run();

@@ -39,10 +39,10 @@ export class ImporterenComponent implements OnInit {
     this.temperatuurService.importFiles(this.selectedFiles).subscribe((result) => {
       this.importInProgress = false;
       this.importResult = result;
-    }, (error) => {
+    }, (response) => {
       this.importInProgress = false;
-      this.importError = error.error;
-      this.importErrorCode = error.status;
+      this.importError = response.error.message;
+      this.importErrorCode = response.error.code;
     });
   }
 

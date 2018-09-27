@@ -7,4 +7,6 @@ interface IDataLayer {
 
 	function getVerbruikData() : IVerbruikDataLayer;
 
+	function getImportData() : \IImportDataLayer;
+
 }
