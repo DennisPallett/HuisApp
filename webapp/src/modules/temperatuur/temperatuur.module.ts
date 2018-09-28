@@ -7,17 +7,20 @@ import { TemperatuurService } from './temperatuur.service';
 import { MonthNamePipe } from '../shared/monthname';
 import { ImporterenComponent } from './importeren/importeren.component';
 import { ChartModule } from 'angular-highcharts';
+import { MaandOverzichtComponent } from './maandoverzicht/maandoverzicht.component';
 
 
 @NgModule({
   declarations: [
-    ImporterenComponent
+    ImporterenComponent,
+    MaandOverzichtComponent
   ],
   imports: [
     SharedModule,
     ChartModule,
     RouterModule.forChild([
-      { path: 'temperatuur/importeren', component: ImporterenComponent }
+      { path: 'temperatuur/importeren', component: ImporterenComponent },
+      { path: 'temperatuur/maandoverzicht', component: MaandOverzichtComponent }
     ])
   ],
   providers: [TemperatuurService, MonthNamePipe]

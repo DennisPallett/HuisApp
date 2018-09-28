@@ -3,6 +3,7 @@ import { HttpClient } from "@angular/common/http";
 import { Observable } from "rxjs";
 import { environment } from "../../environments/environment";
 import { IImportResult } from "./importresult.model";
+import { ITemperatuurPerMaand } from "./temperatuurPerMaand.model";
 
 @Injectable()
 export class TemperatuurService {
@@ -21,6 +22,10 @@ export class TemperatuurService {
     }
 
     return this.httpClient.post<IImportResult>(environment.apiUrl + this.apiAction + "/import", formData);
+  }
+
+  getTemperatuurPerMaand(): Observable<ITemperatuurPerMaand[]> {
+    return this.httpClient.get<ITemperatuurPerMaand[]>(environment.apiUrl + this.apiAction + "/per-maand");
   }
 
 }

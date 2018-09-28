@@ -8,6 +8,36 @@ class TemperatuurAction
 		$this->container = $container;
 	}
 
+	public function getPerMaand ($request, $response, $args) {
+		$records = $this->container->dataLayer->getTemperatuurData()->getPerMaand();
+
+		$data = array();
+		foreach($records as $record) {
+			$data[] = array(
+				'jaar' => (int)$record['year'],
+				'maand' => (int)$record['month'],
+				'avg_temp_indoor' => (double)$record['avg_temp_indoor'],
+				'min_temp_indoor' =>  (double)$record['min_temp_indoor'],
+				'max_temp_indoor' =>  (double)$record['max_temp_indoor'],
+				'avg_temp_1' => (double)$record['avg_temp_1'],
+				'min_temp_1' =>  (double)$record['min_temp_1'],
+				'max_temp_1' =>  (double)$record['max_temp_1'],
+				'avg_temp_2' => (double)$record['avg_temp_2'],
+				'min_temp_2' =>  (double)$record['min_temp_2'],
+				'max_temp_2' =>  (double)$record['max_temp_2'],
+				'avg_temp_3' => (double)$record['avg_temp_3'],
+				'min_temp_3' =>  (double)$record['min_temp_3'],
+				'max_temp_3' =>  (double)$record['max_temp_3'],
+				'avg_temp_4' => (double)$record['avg_temp_4'],
+				'min_temp_4' =>  (double)$record['min_temp_4'],
+				'max_temp_4' =>  (double)$record['max_temp_4']
+			);
+		}
+
+		return $response->withJson($data);
+
+	}
+
 	public function import ($request, $response, $args) {
 		$files = $request->getUploadedFiles();
 
@@ -17,7 +47,7 @@ class TemperatuurAction
 				->withStatus(400);
 		}
 
-		$importDataLayer = $this->container->dataLayer->getImportData();
+		$importDataLayer = $this->container->dataLayer->getTemperatuurData();
 		$importer = new Importer($importDataLayer);
 
 		// get first uploaded file (only single file upload is supported)

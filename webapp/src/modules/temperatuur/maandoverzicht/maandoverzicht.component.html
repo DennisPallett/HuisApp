@@ -1,0 +1,38 @@
+<h1>Temperaturen per maand</h1>
+
+<hr />
+
+<table>
+  <thead>
+    <tr>
+      <th width="200" rowspan="2">Maand</th>
+      <th colspan="3">Indoor Temp</th>
+      <th colspan="3">Temp 1</th>
+      <th colspan="3">Temp 2</th>
+      <th colspan="3">Temp 3</th>
+    </tr>
+    <tr>
+      <th>Min</th><th>Avg</th><th>Max</th>
+      <th>Min</th><th>Avg</th><th>Max</th>
+      <th>Min</th><th>Avg</th><th>Max</th>
+      <th>Min</th><th>Avg</th><th>Max</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let temp of temperaturen">
+      <td class="maand end-section">{{ temp.maand | MonthName }} {{ temp.jaar }}</td>
+      <td>{{ temp.min_temp_indoor | number:'.0-1':'nl' }}</td>
+      <td>{{ temp.avg_temp_indoor | number:'.0-1':'nl' }}</td>
+      <td class="end-section">{{ temp.max_temp_indoor | number:'.0-1':'nl' }}</td>
+      <td>{{ temp.min_temp_1 | number:'.0-1':'nl' }}</td>
+      <td>{{ temp.avg_temp_1 | number:'.0-1':'nl' }}</td>
+      <td class="end-section">{{ temp.max_temp_1 | number:'.0-1':'nl' }}</td>
+      <td>{{ temp.min_temp_2 | number:'.0-1':'nl' }}</td>
+      <td>{{ temp.avg_temp_2 | number:'.0-1':'nl' }}</td>
+      <td class="end-section">{{ temp.max_temp_2 | number:'.0-1':'nl' }}</td>
+      <td>{{ temp.min_temp_3 | number:'.0-1':'nl' }}</td>
+      <td>{{ temp.avg_temp_3 | number:'.0-1':'nl' }}</td>
+      <td>{{ temp.max_temp_3 | number:'.0-1':'nl' }}</td>
+    </tr>
+  </tbody>
+</table>

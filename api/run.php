@@ -38,5 +38,6 @@ $app->get('/verbruik/per-maand', VerbruikAction::class . ':getPerMaand');
 
 
 $app->post('/temperatuur/import', TemperatuurAction::class . ':import');
+$app->get('/temperatuur/per-maand', TemperatuurAction::class . ':getPerMaand');
 
 $app->run();
