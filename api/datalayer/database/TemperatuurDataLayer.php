@@ -75,6 +75,36 @@ class TemperatuurDataLayer implements \datalayer\ITemperatuurDataLayer {
 		return $statement->fetchAll();
 	}
 
+	public function getPerDag () {
+		$sql = "SELECT
+			EXTRACT(YEAR FROM " . $this->datalayer->quoteIdentifier("timestamp") . ") AS year, 
+			EXTRACT(MONTH FROM " . $this->datalayer->quoteIdentifier("timestamp") . ") AS month, 
+			EXTRACT(DAY FROM " . $this->datalayer->quoteIdentifier("timestamp") . ") AS day, 
+			MIN(temperature_indoor) AS min_temp_indoor,
+			MAX(temperature_indoor) AS max_temp_indoor,
+			AVG(temperature_indoor) AS avg_temp_indoor,
+			MIN(temperature_1) AS min_temp_1,
+			MAX(temperature_1) AS max_temp_1,
+			AVG(temperature_1) AS avg_temp_1,
+			MIN(temperature_2) AS min_temp_2,
+			MAX(temperature_2) AS max_temp_2,
+			AVG(temperature_2) AS avg_temp_2,
+			MIN(temperature_3) AS min_temp_3,
+			MAX(temperature_3) AS max_temp_3,
+			AVG(temperature_3) AS avg_temp_3,
+			MIN(temperature_4) AS min_temp_4,
+			MAX(temperature_4) AS max_temp_4,
+			AVG(temperature_4) AS avg_temp_4
+			FROM temperatuur
+			GROUP BY year, month, day
+			ORDER BY year ASC, month, day ASC";
+
+		$statement = $this->db->prepare($sql, array(\PDO::ATTR_CURSOR => \PDO::CURSOR_FWDONLY));
+		$statement->execute();
+
+		return $statement->fetchAll();
+	}
+
 	public function saveTemperatuurEntry (\TemperatuurEntry $entry) {
 		$this->insertQuery->bindValue(1, $entry->Timestamp);
 		$this->insertQuery->bindValue(2, $entry->TI);
