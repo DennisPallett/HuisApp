@@ -1,6 +1,8 @@
-export interface ITemperatuurPerMaand {
+export interface ITemperatuurPerPeriode {
   jaar: number,
   maand: number,
+  dag: number,
+  uur: number,
   avg_temp_indoor: number,
   min_temp_indoor: number,
   max_temp_indoor: number,

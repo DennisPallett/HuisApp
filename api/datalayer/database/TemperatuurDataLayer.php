@@ -75,7 +75,46 @@ class TemperatuurDataLayer implements \datalayer\ITemperatuurDataLayer {
 		return $statement->fetchAll();
 	}
 
-	public function getPerDag () {
+	public function getPerUur ($year, $month) {
+		$sql = "SELECT
+			EXTRACT(YEAR FROM " . $this->datalayer->quoteIdentifier("timestamp") . ") AS year, 
+			EXTRACT(MONTH FROM " . $this->datalayer->quoteIdentifier("timestamp") . ") AS month, 
+			EXTRACT(DAY FROM " . $this->datalayer->quoteIdentifier("timestamp") . ") AS day, 
+			EXTRACT(HOUR FROM " . $this->datalayer->quoteIdentifier("timestamp") . ") AS hour, 
+			MIN(temperature_indoor) AS min_temp_indoor,
+			MAX(temperature_indoor) AS max_temp_indoor,
+			AVG(temperature_indoor) AS avg_temp_indoor,
+			MIN(temperature_1) AS min_temp_1,
+			MAX(temperature_1) AS max_temp_1,
+			AVG(temperature_1) AS avg_temp_1,
+			MIN(temperature_2) AS min_temp_2,
+			MAX(temperature_2) AS max_temp_2,
+			AVG(temperature_2) AS avg_temp_2,
+			MIN(temperature_3) AS min_temp_3,
+			MAX(temperature_3) AS max_temp_3,
+			AVG(temperature_3) AS avg_temp_3,
+			MIN(temperature_4) AS min_temp_4,
+			MAX(temperature_4) AS max_temp_4,
+			AVG(temperature_4) AS avg_temp_4
+			FROM temperatuur
+			WHERE EXTRACT(YEAR FROM " . $this->datalayer->quoteIdentifier("timestamp") . ") = :year 
+			AND EXTRACT(MONTH FROM " . $this->datalayer->quoteIdentifier("timestamp") . ") = :month
+			GROUP BY year, month, day, hour
+			ORDER BY year ASC, month, day, hour ASC";
+
+		$statement = $this->db->prepare($sql, array(\PDO::ATTR_CURSOR => \PDO::CURSOR_FWDONLY));
+		$statement->execute(array(
+			':year' => $year,
+			':month' => $month
+		));
+
+
+		return $statement->fetchAll();
+	}
+
+	public function getPerDag ($year, $month) {
+		$bindParams = array();
+
 		$sql = "SELECT
 			EXTRACT(YEAR FROM " . $this->datalayer->quoteIdentifier("timestamp") . ") AS year, 
 			EXTRACT(MONTH FROM " . $this->datalayer->quoteIdentifier("timestamp") . ") AS month, 
@@ -96,11 +135,23 @@ class TemperatuurDataLayer implements \datalayer\ITemperatuurDataLayer {
 			MAX(temperature_4) AS max_temp_4,
 			AVG(temperature_4) AS avg_temp_4
 			FROM temperatuur
-			GROUP BY year, month, day
+			WHERE 1=1 ";
+
+		if (!empty($month) && is_numeric($month)) {
+			$sql .= " AND EXTRACT(MONTH FROM " . $this->datalayer->quoteIdentifier("timestamp") . ") = :month";
+			$bindParams[':month'] = $month;
+		}
+
+		if (!empty($year) && is_numeric($year)) {
+			$sql .= " AND EXTRACT(YEAR FROM " . $this->datalayer->quoteIdentifier("timestamp") . ") = :year";
+			$bindParams[':year'] = $year;
+		}
+
+		$sql .= " GROUP BY year, month, day
 			ORDER BY year ASC, month, day ASC";
 
 		$statement = $this->db->prepare($sql, array(\PDO::ATTR_CURSOR => \PDO::CURSOR_FWDONLY));
-		$statement->execute();
+		$statement->execute($bindParams);
 
 		return $statement->fetchAll();
 	}

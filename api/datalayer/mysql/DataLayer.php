@@ -8,6 +8,8 @@ class DataLayer extends \datalayer\database\DataLayer {
 
 	private $verbruikDataLayer;
 
+	private $temperatuurDataLayer;
+
 	public function __construct($connectionString, $user, $password) {
 		$this->db = new \PDO($connectionString, $user, $password);
 		$this->db->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
@@ -17,6 +19,11 @@ class DataLayer extends \datalayer\database\DataLayer {
 
 		$this->meterstandenDataLayer = new \datalayer\database\MeterstandenDataLayer($this, $this->db);
 		$this->verbruikDataLayer = new \datalayer\database\VerbruikDataLayer($this, $this->db);
+		$this->temperatuurDataLayer = new \datalayer\database\TemperatuurDataLayer($this, $this->db);
+	}
+
+	public function getTemperatuurData () : \datalayer\ITemperatuurDataLayer {
+		return $this->temperatuurDataLayer;
 	}
 
 	public function getMeterstandenData ()  : \datalayer\IMeterstandenDataLayer {

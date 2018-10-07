@@ -3,5 +3,6 @@ namespace datalayer;
 
 interface ITemperatuurDataLayer extends \IImportDataLayer {
 	function getPerMaand();
-	function getPerDag();
+	function getPerDag($year, $month);
+	function getPerUur($year, $month);
 }

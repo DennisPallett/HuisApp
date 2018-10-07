@@ -3,8 +3,7 @@ import { HttpClient } from "@angular/common/http";
 import { Observable } from "rxjs";
 import { environment } from "../../environments/environment";
 import { IImportResult } from "./importresult.model";
-import { ITemperatuurPerMaand } from "./temperatuurPerMaand.model";
-import { ITemperatuurPerDag } from "./temperatuurPerDag.model";
+import { ITemperatuurPerPeriode } from "./temperatuurPerPeriode.model";
 
 @Injectable()
 export class TemperatuurService {
@@ -25,12 +24,31 @@ export class TemperatuurService {
     return this.httpClient.post<IImportResult>(environment.apiUrl + this.apiAction + "/import", formData);
   }
 
-  getTemperatuurPerMaand(): Observable<ITemperatuurPerMaand[]> {
-    return this.httpClient.get<ITemperatuurPerMaand[]>(environment.apiUrl + this.apiAction + "/per-maand");
+  getTemperatuurPerMaand(): Observable<ITemperatuurPerPeriode[]> {
+    return this.httpClient.get<ITemperatuurPerPeriode[]>(environment.apiUrl + this.apiAction + "/per-maand");
   }
 
-  getTemperatuurPerDag(): Observable<ITemperatuurPerDag[]> {
-    return this.httpClient.get<ITemperatuurPerDag[]>(environment.apiUrl + this.apiAction + "/per-dag");
+  getTemperatuurPerDag(year?: number, month?: number): Observable<ITemperatuurPerPeriode[]> {
+    var strMonth = (month != null) ? month.toString() : null;
+    var strYear = (year != null) ? year.toString() : null;
+
+    return this.httpClient.get<ITemperatuurPerPeriode[]>(environment.apiUrl + this.apiAction + "/per-dag", {
+      params:
+      {
+        month: strMonth,
+        year: strYear
+      }
+    });
+  }
+
+  getTemperatuurPerUur(year: number, month: number): Observable<ITemperatuurPerPeriode[]> {
+    return this.httpClient.get<ITemperatuurPerPeriode[]>(environment.apiUrl + this.apiAction + "/per-uur", {
+      params:
+      {
+        month: month.toString(),
+        year: year.toString()
+      }
+    });
   }
 
 }

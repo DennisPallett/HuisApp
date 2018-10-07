@@ -1,0 +1,38 @@
+table {
+  width: 100%;
+  text-align: center;
+  border: 1px solid #CCC;
+}
+
+th {
+  text-align: center;
+}
+
+th, td {
+  padding: 5px;
+}
+
+td.maand {
+  text-align: right;
+}
+
+td.end-section {
+  border-right: 1px solid #CCC;
+}
+
+thead {
+  background-color: #CCC;
+}
+
+tr:nth-child(even) {
+  background: #EFEFEF;
+}
+
+td.icons span {
+  color: blue;
+  cursor: pointer;
+}
+
+td.icons span:hover {
+  text-decoration: underline;
+}

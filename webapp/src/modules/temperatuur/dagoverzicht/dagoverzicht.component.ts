@@ -8,10 +8,10 @@ import * as Highcharts from 'highcharts';
 import { ITemperatuurPerPeriode } from '../temperatuurPerPeriode.model';
 
 @Component({
-  templateUrl: './maandoverzicht.component.html',
-  styleUrls: ['./maandoverzicht.component.css']
+  templateUrl: './dagoverzicht.component.html',
+  styleUrls: ['./dagoverzicht.component.css']
 })
-export class MaandOverzichtComponent implements OnInit {
+export class DagOverzichtComponent implements OnInit {
   chart = new Chart({
     chart: {
       zoomType: 'x'
@@ -45,6 +45,14 @@ export class MaandOverzichtComponent implements OnInit {
 
   temperaturen: ITemperatuurPerPeriode[] = [];
 
+  currentMonth: number = 8;
+
+  currentYear: number = 2018;
+
+  currentMonthYear: string = '8-2018';
+
+  maanden: ITemperatuurPerPeriode[] = [];
+
   constructor(
     private temperatuurService: TemperatuurService) {
   }
@@ -56,13 +64,32 @@ export class MaandOverzichtComponent implements OnInit {
       chart.showLoading();
     });
 
+    this.loadMaanden();
+
+    this.loadTemperaturen();
+
+    this.loadChartData();
+  }
+
+  public changeMonth() {
+    var split = this.currentMonthYear.split('-');
+    this.currentMonth = parseInt(split[0]);
+    this.currentYear = parseInt(split[1]);
+
     this.loadTemperaturen();
 
     this.loadChartData();
   }
 
   private loadChartData() {
-    this.temperatuurService.getTemperatuurPerDag().subscribe((temperaturen) => {
+    this.chart.ref$.subscribe((chart) => {
+      while (chart.series.length > 0)
+        chart.series[0].remove(true);
+
+      chart.showLoading();
+    });
+
+    this.temperatuurService.getTemperatuurPerUur(this.currentYear, this.currentMonth).subscribe((temperaturen) => {
       var series = {
         "avg_temp_indoor": { 'name': 'Avg Temp Indoor', 'data': [] },
         "min_temp_indoor": { 'name': 'Min Temp Indoor', 'data': [], visible: false },
@@ -79,7 +106,7 @@ export class MaandOverzichtComponent implements OnInit {
       };
 
       temperaturen.forEach(function (value: ITemperatuurPerPeriode) {
-        var timestamp = new Date(value.jaar, value.maand - 1, value.dag).getTime();
+        var timestamp = new Date(value.jaar, value.maand - 1, value.dag, value.uur).getTime();
         series['avg_temp_indoor']['data'].push([timestamp, value.avg_temp_indoor]);
         series['min_temp_indoor']['data'].push([timestamp, value.min_temp_indoor]);
         series['max_temp_indoor']['data'].push([timestamp, value.max_temp_indoor]);
@@ -105,8 +132,14 @@ export class MaandOverzichtComponent implements OnInit {
   }
 
   private loadTemperaturen() {
-    this.temperatuurService.getTemperatuurPerMaand().subscribe((temperaturen) => {
+    this.temperatuurService.getTemperatuurPerDag(this.currentYear, this.currentMonth).subscribe((temperaturen) => {
       this.temperaturen = temperaturen;
+    });
+  }
+
+  private loadMaanden() {
+    this.temperatuurService.getTemperatuurPerMaand().subscribe((temperaturen) => {
+      this.maanden = temperaturen;
     });
   }
   
