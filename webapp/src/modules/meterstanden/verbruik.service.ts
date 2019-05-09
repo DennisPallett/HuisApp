@@ -1,10 +1,9 @@
 import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { Observable } from "rxjs";
-import { map } from 'rxjs/operators';
 import { environment } from "../../environments/environment";
-import { IMeterstand } from "./meterstand.model";
 import { IVerbruikPerMaand } from "./verbruikPerMaand.model";
+import { IVerbruikPerJaar } from "./verbruikPerJaar";
 
 @Injectable()
 export class VerbruikService {
@@ -16,6 +15,10 @@ export class VerbruikService {
 
   getPerMaand(): Observable<IVerbruikPerMaand[]> {
     return this.httpClient.get<IVerbruikPerMaand[]>(environment.apiUrl + this.apiAction + "/per-maand");
+  }
+
+  getPerJaar(): Observable<IVerbruikPerJaar[]> {
+    return this.httpClient.get<IVerbruikPerJaar[]>(environment.apiUrl + this.apiAction + "/per-jaar");
   }
   
 }

@@ -35,6 +35,7 @@ $app->post('/meterstanden/{opnameDatum}', MeterstandenAction::class . ':update')
 $app->delete('/meterstanden/{opnameDatum}', MeterstandenAction::class . ':delete');
 
 $app->get('/verbruik/per-maand', VerbruikAction::class . ':getPerMaand');
+$app->get('/verbruik/per-jaar', VerbruikAction::class . ':getPerJaar');
 
 
 $app->post('/temperatuur/import', TemperatuurAction::class . ':import');

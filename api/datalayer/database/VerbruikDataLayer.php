@@ -29,6 +29,23 @@ class VerbruikDataLayer implements \datalayer\IVerbruikDataLayer {
 		return $statement->fetchAll();
 	}
 
+	public function getPerJaar () {
+		$sql = "SELECT
+			EXTRACT(YEAR FROM datum) AS year, 
+			SUM(verbruik_gas) AS verbruik_gas,
+			SUM(verbruik_water) AS verbruik_water,
+			SUM(verbruik_elektra_e1) AS verbruik_elektra_e1,
+			SUM(verbruik_elektra_e2) AS verbruik_elektra_e2
+			FROM verbruik
+			GROUP BY year
+			ORDER BY year ASC";
+
+		$statement = $this->db->prepare($sql, array(\PDO::ATTR_CURSOR => \PDO::CURSOR_FWDONLY));
+		$statement->execute();
+
+		return $statement->fetchAll();
+	}
+
 	public function clearVerbruik () {
 		$this->db->exec("TRUNCATE TABLE " . $this->datalayer->quoteIdentifier("verbruik"));
 	}

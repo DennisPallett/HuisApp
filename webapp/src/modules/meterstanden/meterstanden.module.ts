@@ -11,6 +11,7 @@ import { AanpassenComponent } from './aanpassen/aanpassen.component';
 import { ChartModule } from 'angular-highcharts';
 import { VerbruikService } from './verbruik.service';
 import { VerbruikComponent } from './verbruik/verbruik.component';
+import { VerbruikPerJaarComponent } from './verbruikPerJaar/verbruikPerJaar.component';
 
 
 @NgModule({
@@ -18,7 +19,8 @@ import { VerbruikComponent } from './verbruik/verbruik.component';
     OverzichtComponent,
     InvoerenComponent,
     AanpassenComponent,
-    VerbruikComponent
+    VerbruikComponent,
+    VerbruikPerJaarComponent
   ],
   imports: [
     SharedModule,
@@ -27,7 +29,8 @@ import { VerbruikComponent } from './verbruik/verbruik.component';
       { path: 'meterstanden', component: OverzichtComponent },
       { path: 'meterstanden/invoeren', component: InvoerenComponent },
       { path: 'meterstanden/aanpassen/:opnameDatum', component: AanpassenComponent },
-      { path: 'meterstanden/verbruik', component: VerbruikComponent },
+      { path: 'meterstanden/verbruik/maand', component: VerbruikComponent },
+      { path: 'meterstanden/verbruik/jaar', component: VerbruikPerJaarComponent },
     ])
   ],
   providers: [MeterstandenService, MonthNamePipe, VerbruikService]

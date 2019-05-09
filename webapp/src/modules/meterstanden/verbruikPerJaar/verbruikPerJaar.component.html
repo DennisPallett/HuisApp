@@ -1,0 +1,27 @@
+<h1>Verbruik per jaar</h1>
+<hr />
+<div [chart]="chart"></div>
+<hr />
+
+<table>
+  <thead>
+    <tr>
+      <th width="200">Jaar</th>
+      <th width="200">Elektra E1 (kWh)</th>
+      <th>Elektra E2 (kWh)</th>
+      <th width="200">Gas (m3)</th>
+      <th>Water (m3)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let verbruik of verbruik">
+      <td>{{ verbruik.jaar }}</td>
+      <td>{{ verbruik.elektraE1 | number:'.0-0':'nl' }}</td>
+      <td>{{ verbruik.elektraE2 | number:'.0-0':'nl' }}</td>
+      <td>{{ verbruik.gas | number:'.0-0':'nl' }}</td>
+      <td>{{ verbruik.water | number:'.0-0':'nl' }}</td>
+    </tr>
+  </tbody>
+</table>
+
+<hr />

@@ -5,18 +5,19 @@ import * as moment from 'moment';
 import { IVerbruikPerMaand } from '../verbruikPerMaand.model';
 import nl from '@angular/common/locales/nl';
 import { registerLocaleData } from '@angular/common';
+import { IVerbruikPerJaar } from '../verbruikPerJaar';
 
 @Component({
-  templateUrl: './verbruik.component.html',
-  styleUrls: ['./verbruik.component.css']
+  templateUrl: './verbruikPerJaar.component.html',
+  styleUrls: ['./verbruikPerJaar.component.css']
 })
-export class VerbruikComponent implements OnInit {
+export class VerbruikPerJaarComponent implements OnInit {
   chart = new Chart({
     chart: {
       type: 'column'
     },
     title: {
-      text: 'Verbruik per maand'
+      text: 'Verbruik per jaar'
     },
     xAxis: {
       categories: []
@@ -55,17 +56,14 @@ export class VerbruikComponent implements OnInit {
     series: []
   });
 
-  verbruik: IVerbruikPerMaand[] = [];
+  verbruik: IVerbruikPerJaar[] = [];
 
   constructor(private verbruikService: VerbruikService) {
   }
 
-  sortVerbruikDesc(a: IVerbruikPerMaand, b: IVerbruikPerMaand): number {
+  sortVerbruikDesc(a: IVerbruikPerJaar, b: IVerbruikPerJaar): number {
     if (a.jaar < b.jaar) return 1;
     if (a.jaar > b.jaar) return -1;
-
-    if (a.maand < b.maand) return 1;
-    if (a.maand > b.maand) return -1;
 
     return 0;
   }
@@ -77,7 +75,7 @@ export class VerbruikComponent implements OnInit {
       chart.showLoading();
     });
 
-    this.verbruikService.getPerMaand().subscribe((verbruik) => {
+    this.verbruikService.getPerJaar().subscribe((verbruik) => {
       this.verbruik = verbruik.slice(0);
 
       this.verbruik.sort(this.sortVerbruikDesc);
@@ -89,7 +87,7 @@ export class VerbruikComponent implements OnInit {
       var elektraE2Serie = { 'name': 'Elektra E2 (kWh)', 'data': [], 'stack': 'elektra' };
 
       verbruik.forEach(function (monthVerbruik) {
-        categories.push(moment(new Date(monthVerbruik.jaar, monthVerbruik.maand - 1)).format("MMM YYYY"));
+        categories.push(moment(new Date(monthVerbruik.jaar, 0)).format("YYYY"));
         gasSerie['data'].push(Math.round(monthVerbruik.gas));
         waterSerie['data'].push(Math.round(monthVerbruik.water));
         elektraE1Serie['data'].push(Math.round(monthVerbruik.elektraE1));
